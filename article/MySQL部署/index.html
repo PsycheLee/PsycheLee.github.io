@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          lixuelian | Blog
+          MySQL部署 - lixuelian | Blog
         
     </title>
 
@@ -71,7 +71,7 @@
 <style type="text/css">
     header.intro-header{
         
-            background-image: url('/img/article_header/article_bg.jpg')
+            background-image: url('/img/article_header/article_header.png')
             /*post*/
         
     }
@@ -88,12 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
+                              <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+                            
                         </div>
-                        <h1></h1>
-                        <h2 class="subheading"></h2>
+                        <h1>MySQL部署</h1>
+                        <h2 class="subheading">This is about MySQL on Linux</h2>
                         <span class="meta">
                             Posted by PsycheLee on
-                            2020-11-18
+                            2015-08-11
                         </span>
                     </div>
                 
@@ -140,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -210,7 +212,8 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="mysql部署">MySQL部署</h2>
+                <h2 id=""></h2>
+<h2 id="mysql部署">MySQL部署</h2>
 <h3 id="1-上传安装包">1. 上传安装包</h3>
 <p>​	rz  选择mysql-5.7.11-linux-glibc2.5-x86_64.tar</p>
 <h3 id="2-解压及创建目录">2. 解压及创建目录</h3>
@@ -305,6 +308,18 @@
             <!-- Tabe of Content -->
             <!-- Table of Contents -->
 
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"></span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mysql部署"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MySQL&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-上传安装包"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">1. &#x4E0A;&#x4F20;&#x5B89;&#x88C5;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-解压及创建目录"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">2. &#x89E3;&#x538B;&#x53CA;&#x521B;&#x5EFA;&#x76EE;&#x5F55;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-创建mycnf文件"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">3. &#x521B;&#x5EFA;my.cnf&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-创建用户组和用户"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">4. &#x521B;&#x5EFA;&#x7528;&#x6237;&#x7EC4;&#x548C;&#x7528;&#x6237;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5-配置环境变量"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">5. &#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6赋权"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">6.&#x8D4B;&#x6743;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7配置服务和开机自启动"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">7.&#x914D;&#x7F6E;&#x670D;&#x52A1;&#x548C;&#x5F00;&#x673A;&#x81EA;&#x542F;&#x52A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8安装libaio及安装mysql的初始db"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">8.&#x5B89;&#x88C5;libaio&#x53CA;&#x5B89;&#x88C5;mysql&#x7684;&#x521D;&#x59CB;DB</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9查看临时密码"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">9.&#x67E5;&#x770B;&#x4E34;&#x65F6;&#x5BC6;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10启动"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">10.&#x542F;&#x52A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11登录和修改密码"><span class="toc-nav-number">2.11.</span> <span class="toc-nav-text">11.&#x767B;&#x5F55;&#x548C;&#x4FEE;&#x6539;&#x5BC6;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#12重启"><span class="toc-nav-number">2.12.</span> <span class="toc-nav-text">12.&#x91CD;&#x542F;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
                 
             <!-- Sidebar Container -->
             <div class="
@@ -319,6 +334,8 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#MySQL" title="MySQL">MySQL</a>
+                        
                     </div>
                 </section>
                 
