@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          jdk的linux安装 - lixuelian | Blog
+          hadoop参数调优 - lixuelian | Blog
         
     </title>
 
-    <link rel="canonical" href="http://psychelee.github.io/article/jdk安装/">
+    <link rel="canonical" href="http://psychelee.github.io/article/hadoop(六)参数调优/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#shell" title="shell">shell</a>
                             
                         </div>
-                        <h1>jdk的linux安装</h1>
-                        <h2 class="subheading">This is about jdk</h2>
+                        <h1>hadoop参数调优</h1>
+                        <h2 class="subheading">this is about hadoop parameters</h2>
                         <span class="meta">
                             Posted by PsycheLee on
-                            2015-09-08
+                            2018-09-08
                         </span>
                     </div>
                 
@@ -212,17 +212,78 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="jdk的linux安装">jdk的linux安装</h2>
-<h3 id="1上传安装包">1.上传安装包</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# ll</span><br><span class="line">total 717636</span><br><span class="line">-rw-r--r-- 1 root root 185646832 Nov 28 08:56 jdk-8u181-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="2创建文件夹">2.创建文件夹</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# mkdir -p /usr/java</span><br></pre></td></tr></table></figure>
-<h3 id="3解压">3.解压</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# tar -xzvf jdk-8u181-linux-x64.tar.gz -C /usr/java</span><br></pre></td></tr></table></figure>
-<h3 id="4赋权">4.赋权</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 7 10 143 4096 Jul  7  2018 jdk1.8.0_181</span><br><span class="line">[root@hadoop001 java]# chown -R root:root jdk1.8.0_181/</span><br><span class="line">[root@hadoop001 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 7 root root 4096 Jul  7  2018 jdk1.8.0_181</span><br><span class="line">[root@hadoop001 java]#</span><br></pre></td></tr></table></figure>
-<h3 id="5环境变量配置">5.环境变量配置</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 java]# vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_181</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br><span class="line">[root@hadoop001 java]# source /etc/profile</span><br><span class="line">[root@hadoop001 java]# which java</span><br><span class="line">/usr/java/jdk1.8.0_181/bin/java</span><br><span class="line">[root@hadoop001 java]# echo $PATH</span><br><span class="line">/usr/java/jdk1.8.0_181/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin</span><br></pre></td></tr></table></figure>
+                <h2 id="hadoop参数调优">hadoop参数调优</h2>
+<h4 id="container-容器">container 容器</h4>
+<p>关于yarn的调优，其实就是调整container<br>
+虚拟化   是memory + cpu vcore组成的  是专门运行任务</p>
+<p>生产上应该如何调优container参数？<br>
+假设128G  16 物理core</p>
+<h5 id="11-系统装完-消耗-1g">1.1 系统装完  消耗     （1G）</h5>
+<h5 id="12-系统要预留20内存-1g">1.2 系统要预留20%内存 （1G）</h5>
+<p>​	给当前进程服务，防止出现oom-kill机制<br>
+	Linux系统防止夯住<br>
+	给未来部署软件预留空间<br>
+128*20%=25.6G==26G</p>
+<p>还剩：102G</p>
+<h5 id="13-dn-和-nm-节点">1.3 DN  和 NM 节点</h5>
+<p>存储和计算一体，数据本地化。</p>
+<p>​	DN = 2G<br>
+	NM = 4G   NM进程本身的内存</p>
+<p>​	102-2-4=96G  是真正container容器总内存 ，这才是真正计算的小弟</p>
+<h5 id="14-container内存">1.4  container内存</h5>
+<p><a href="http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2/</a></p>
+<p>yarn.nodemanager.resource.memory-mb     96G<br>
+yarn.scheduler.minimum-allocation-mb	1G   极限情况 96个container容器 内存1G<br>
+yarn.scheduler.maximum-allocation-mb	96G  极限情况 1个container容器 内存96G</p>
+<p>container容器会不断的自动增加内存1G，cdh有这个参数  默认不动</p>
+<h5 id="15-container-虚拟core">1.5 container 虚拟core</h5>
+<p>这个概念是yarn自己引入的，<br>
+设计初衷是考虑不同服务器的cpu性能不一样，每个cpu计算能力不一样。<br>
+比如某个物理cpu是另外一个物理cpu的2倍，<br>
+这时通过设置第一个物理cpu的虚拟core来弥补差异。</p>
+<p>虽然是这样说的，后来演变为，大家都是使用虚拟core，<br>
+默认值一般都不会去修改，就是2<br>
+yarn.nodemanager.resource.pcores-vcores-multiplier  2</p>
+<p>yarn.nodemanager.resource.cpu-vcores            32【物理core16*2】<br>
+yarn.scheduler.minimum-allocation-vcores	    1   极限情况下，是32个	<br>
+yarn.scheduler.maximum-allocation-vcores	   32  极限情况下，是1个</p>
+<p>补充：<br>
+yarn.nodemanager.pmem-check-enabled	true	 生产调整<br>
+yarn.nodemanager.vmem-check-enabled	true     生产调整<br>
+yarn.nodemanager.vmem-pmem-ratio	2.1      不动</p>
+<h5 id="16-生产上如何设置-突破口">1.6 生产上如何设置  突破口</h5>
+<p>yarn.nodemanager.resource.cpu-vcores            32<br>
+yarn.scheduler.minimum-allocation-vcores	   1<br>
+yarn.scheduler.maximum-allocation-vcores	   4  极限情况下，是只有【32/4】8个container容器</p>
+<p>CDH官方经过大量验证，经验值，container容器最大分配vcore不要超过5<br>
+故一般我司生产上设置 yarn.scheduler.maximum-allocation-vcores 4</p>
+<p>yarn.nodemanager.resource.memory-mb     96G<br>
+yarn.scheduler.minimum-allocation-mb	         1G<br>
+yarn.scheduler.maximum-allocation-mb	12G  极限情况下，是只有8个container容器</p>
+<p>也就是说：1个container 12G，4vcore ===》 1vcore 使用3G</p>
+<h5 id="扩展jvm内存不要超过32g">扩展【JVM内存不要超过32G】</h5>
+<p>​	【内存指针压缩的技术 】<br>
+<a href="https://blog.csdn.net/weixin_44641024/article/details/103248842" target="_blank" rel="noopener">https://blog.csdn.net/weixin_44641024/article/details/103248842</a></p>
+<h4 id="调度器">调度器</h4>
+<h5 id="fifo-scheduler">FIFO Scheduler</h5>
+<p>把应用按提交的顺序排成一个队列，这是一个先进先出队列，在进行资源分配的时候，先给队列中最头上的应用进行分配资源，待最头上的应用需求满足后再给下一个分配，以此类推。<br>
+FIFO Scheduler是最简单也是最容易理解的调度器，也不需要任何配置，但它并不适用于共享集群。大的应用可能会占用所有集群资源，这就导致其它应用被阻塞。在共享集群中，更适合采用Capacity Scheduler或Fair Scheduler，这两个调度器都允许大任务和小任务在提交的同时获得一定的系统资源。<br>
+在FIFO 调度器中，小任务会被大任务阻塞。</p>
+<h5 id="capacity调度器">Capacity调度器</h5>
+<p>有一个专门的队列用来运行小任务，但是为小任务专门设置一个队列会预先占用一定的集群资源，这就导致大任务的执行时间会落后于使用FIFO调度器时的时间。</p>
+<h5 id="fair调度器">Fair调度器</h5>
+<p>我们不需要预先占用一定的系统资源，Fair调度器会为所有运行的job动态的调整系统资源。如下图所示，当第一个大job提交时，只有这一个job在运行，此时它获得了所有集群资源；当第二个小任务提交后，Fair调度器会分配一半资源给这个小任务，让这两个任务公平的共享集群资源。<br>
+需要注意的是，在下图Fair调度器中，从第二个任务提交到获得资源会有一定的延迟，因为它需要等待第一个任务释放占用的Container。小任务执行完成之后也会释放自己占用的资源，大任务又获得了全部的系统资源。最终的效果就是Fair调度器即得到了高的资源利用率又能保证小任务及时完成。</p>
+<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C18.png" alt="1607699363574"></p>
+<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C17.png" alt="1607699376697"></p>
+<p>生产上 更多使用 公平调度器</p>
+<p>在Fair调度器中，我们不需要预先占用一定的系统资源，<br>
+Fair调度器会为所有运行的job动态的调整系统资源。</p>
+<p>当第一个大job提交时，只有这一个job在运行，此时它获得了所有集群资源；</p>
+<p>当第二个小任务提交后，从提交到获得资源会有一定的延迟，<br>
+因为它需要等待第一个任务释放占用的Container。</p>
+<p>小任务执行完成之后也会释放自己占用的资源，大任务又获得了全部的系统资源。<br>
+最终的效果就是Fair调度器即得到了高的资源利用率又能保证小任务及时完成。</p>
 
                 
 
@@ -231,12 +292,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">&larr; Previous Post</a>
+                            <a href="/article/1/" data-toggle="tooltip" data-placement="top" title="标题">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/rundeck入门/" data-toggle="tooltip" data-placement="top" title="rundeck入门">Next Post &rarr;</a>
+                            <a href="/article/hive入门/" data-toggle="tooltip" data-placement="top" title="hive入门">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -286,7 +347,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#jdk的linux安装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">jdk&#x7684;linux&#x5B89;&#x88C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1上传安装包"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.&#x4E0A;&#x4F20;&#x5B89;&#x88C5;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2创建文件夹"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2.&#x521B;&#x5EFA;&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3解压"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">3.&#x89E3;&#x538B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4赋权"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">4.&#x8D4B;&#x6743;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5环境变量配置"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">5.&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x914D;&#x7F6E;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoop参数调优"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoop&#x53C2;&#x6570;&#x8C03;&#x4F18;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#container-容器"><span class="toc-nav-number">1.0.1.</span> <span class="toc-nav-text">container &#x5BB9;&#x5668;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#11-系统装完-消耗-1g"><span class="toc-nav-number">1.0.1.1.</span> <span class="toc-nav-text">1.1 &#x7CFB;&#x7EDF;&#x88C5;&#x5B8C;  &#x6D88;&#x8017;     &#xFF08;1G&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#12-系统要预留20内存-1g"><span class="toc-nav-number">1.0.1.2.</span> <span class="toc-nav-text">1.2 &#x7CFB;&#x7EDF;&#x8981;&#x9884;&#x7559;20%&#x5185;&#x5B58; &#xFF08;1G&#xFF09;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#13-dn-和-nm-节点"><span class="toc-nav-number">1.0.1.3.</span> <span class="toc-nav-text">1.3 DN  &#x548C; NM &#x8282;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#14-container内存"><span class="toc-nav-number">1.0.1.4.</span> <span class="toc-nav-text">1.4  container&#x5185;&#x5B58;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#15-container-虚拟core"><span class="toc-nav-number">1.0.1.5.</span> <span class="toc-nav-text">1.5 container &#x865A;&#x62DF;core</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#16-生产上如何设置-突破口"><span class="toc-nav-number">1.0.1.6.</span> <span class="toc-nav-text">1.6 &#x751F;&#x4EA7;&#x4E0A;&#x5982;&#x4F55;&#x8BBE;&#x7F6E;  &#x7A81;&#x7834;&#x53E3;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#扩展jvm内存不要超过32g"><span class="toc-nav-number">1.0.1.7.</span> <span class="toc-nav-text">&#x6269;&#x5C55;&#x3010;JVM&#x5185;&#x5B58;&#x4E0D;&#x8981;&#x8D85;&#x8FC7;32G&#x3011;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#调度器"><span class="toc-nav-number">1.0.2.</span> <span class="toc-nav-text">&#x8C03;&#x5EA6;&#x5668;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#fifo-scheduler"><span class="toc-nav-number">1.0.2.1.</span> <span class="toc-nav-text">FIFO Scheduler</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#capacity调度器"><span class="toc-nav-number">1.0.2.2.</span> <span class="toc-nav-text">Capacity&#x8C03;&#x5EA6;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#fair调度器"><span class="toc-nav-number">1.0.2.3.</span> <span class="toc-nav-text">Fair&#x8C03;&#x5EA6;&#x5668;</span></a></li></ol></li></ol></li></ol></li></ol>
         
         </div>
       </aside>

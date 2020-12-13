@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          jdk的linux安装 - lixuelian | Blog
+          hadoop(三) - lixuelian | Blog
         
     </title>
 
-    <link rel="canonical" href="http://psychelee.github.io/article/jdk安装/">
+    <link rel="canonical" href="http://psychelee.github.io/article/hadoop(三)读写流程/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,7 +91,7 @@
                               <a class="tag" href="/tags/#shell" title="shell">shell</a>
                             
                         </div>
-                        <h1>jdk的linux安装</h1>
+                        <h1>hadoop(三)</h1>
                         <h2 class="subheading">This is about jdk</h2>
                         <span class="meta">
                             Posted by PsycheLee on
@@ -212,17 +212,126 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="jdk的linux安装">jdk的linux安装</h2>
-<h3 id="1上传安装包">1.上传安装包</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# ll</span><br><span class="line">total 717636</span><br><span class="line">-rw-r--r-- 1 root root 185646832 Nov 28 08:56 jdk-8u181-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="2创建文件夹">2.创建文件夹</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# mkdir -p /usr/java</span><br></pre></td></tr></table></figure>
-<h3 id="3解压">3.解压</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# tar -xzvf jdk-8u181-linux-x64.tar.gz -C /usr/java</span><br></pre></td></tr></table></figure>
-<h3 id="4赋权">4.赋权</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 7 10 143 4096 Jul  7  2018 jdk1.8.0_181</span><br><span class="line">[root@hadoop001 java]# chown -R root:root jdk1.8.0_181/</span><br><span class="line">[root@hadoop001 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 7 root root 4096 Jul  7  2018 jdk1.8.0_181</span><br><span class="line">[root@hadoop001 java]#</span><br></pre></td></tr></table></figure>
-<h3 id="5环境变量配置">5.环境变量配置</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 java]# vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_181</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br><span class="line">[root@hadoop001 java]# source /etc/profile</span><br><span class="line">[root@hadoop001 java]# which java</span><br><span class="line">/usr/java/jdk1.8.0_181/bin/java</span><br><span class="line">[root@hadoop001 java]# echo $PATH</span><br><span class="line">/usr/java/jdk1.8.0_181/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin</span><br></pre></td></tr></table></figure>
+                <h2 id="hadoop三">hadoop(三)</h2>
+<h4 id="hdfs主从架构">HDFS主从架构</h4>
+<h5 id="namenode-nn-名称节点">namenode ：nn 名称节点</h5>
+<ul>
+<li>
+<p>文件的名称</p>
+</li>
+<li>
+<p>文件的目录结构</p>
+</li>
+<li>
+<p>文件的属性  权限 副本数 创建时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 ~]$ hdfs dfs -ls /</span><br><span class="line"></span><br><span class="line">20/11/25 21:16:55 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line"></span><br><span class="line">Found 3 items</span><br><span class="line"></span><br><span class="line">drwx------   - hadoop supergroup          0 2020-11-22 19:52 /tmp</span><br><span class="line"></span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2020-11-21 21:50 /user</span><br><span class="line"></span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2020-11-22 19:52 /wordcount</span><br><span class="line"></span><br><span class="line">[bigdata@hadoop001 ~]$</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>一个文件被对应切割哪些数据块（包含副本数的块） ==》 对应分布在哪些datanode</p>
+<p>blockmap 块映射  nn是不会持久化存储这种映射关系<br>
+是通过集群的启动和运行时，dn定期汇报blockreport给nn，然后在内存中动态维护这种映射关系。</p>
+</li>
+</ul>
+<p><strong>作用:</strong><br>
+管理文件系统的命名空间，其实就是维护文件系统树的文件和文件夹<br>
+镜像文件 fsimage<br>
+编辑日志文件 editlogs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 19:04 edits_0000000000000000511-0000000000000000512</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 20:04 edits_0000000000000000513-0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 21:04 edits_0000000000000000515-0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop 1048576 Nov 25 21:04 edits_inprogress_0000000000000000517</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 20:04 fsimage_0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 20:04 fsimage_0000000000000000514.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 21:04 fsimage_0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 21:04 fsimage_0000000000000000516.md5</span><br></pre></td></tr></table></figure>
+<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5Chdfsarchitecture.png" alt="hdfsarchitecture"></p>
+<h5 id="secondary-namenode-snn-第二名称节点">secondary namenode: snn 第二名称节点</h5>
+<ul>
+<li>
+<p>fsimage editlog文件拿过来合并  备份 推送给nn</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 19:04 edits_0000000000000000511-0000000000000000512</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 20:04 edits_0000000000000000513-0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 21:04 edits_0000000000000000515-0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 20:04 fsimage_0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 20:04 fsimage_0000000000000000514.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 21:04 fsimage_0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 21:04 fsimage_0000000000000000516.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop     200 Nov 25 21:04 VERSION</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>将老大的<br>
+fsimage_0000000000000000514<br>
+edits_0000000000000000515-0000000000000000516  ==》检测点动作 checkpoint<br>
+合并 fsimage_0000000000000000516  将516推送给nn<br>
+而新的读写记录则在 edits_inprogress_0000000000000000517编辑日志里</p>
+<p>dfs.namenode.checkpoint.period  3600<br>
+dfs.namenode.checkpoint.txns    1000000</p>
+<p>早期为了解决nn是单点的，单点故障，增加一个snn，1小时的checkpoint<br>
+虽然能够减轻单点故障的带来的数据丢失风险，但是生产上不允许使用snn</p>
+<p>11:00 checkpoint<br>
+11:30  数据一直在写 突然nn硬盘挂了  无法恢复<br>
+拿snn节点的最新的fsimage，那么只能恢复11点的数据</p>
+<p>在生产上是不允许snn，是使用HA 高可靠，是通过配置另外一个实时的备份nn节点，<br>
+随时等待老大active nn 挂掉，然后成为老大</p>
+<h5 id="datanode-数据节点-dn">datanode： 数据节点 dn</h5>
+<ul>
+<li>存储数据块 和 数据块的校验</li>
+</ul>
+<p>[bigdata@hadoop001 subdir0]$ pwd<br>
+/home/hadoop/tmp/dfs/data/current/BP-1245831-192.168.0.3-1605965291938/current/finalized/subdir0/subdir0<br>
+[bigdata@hadoop001 subdir0]$</p>
+<ul>
+<li>每隔一定的时间去发送blockreport</li>
+</ul>
+<p>dfs.blockreport.intervalMsec          21600000=6h<br>
+dfs.datanode.directoryscan.interval   21600=6h</p>
+<p>补充:<a href="https://ruozedata.github.io/2019/06/06/%E7%94%9F%E4%BA%A7HDFS%20Block%E6%8D%9F%E5%9D%8F%E6%81%A2%E5%A4%8D%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5(%E5%90%AB%E6%80%9D%E8%80%83%E9%A2%98)/" target="_blank" rel="noopener">https://ruozedata.github.io/2019/06/06/生产HDFS Block损坏恢复最佳实践(含思考题)/</a></p>
+<h4 id="hdfs写流程">HDFS写流程</h4>
+<p>对用户是无感知的</p>
+<ul>
+<li>
+<p>HDFS Client调用FileSystem.create(filePath)方法，去和NN进行【RPC】通信。</p>
+<p>NN会去check这个文件是否存在，是否有权限创建这个文件。<br>
+假如都可以，就创建一个新的文件，但是这时没有数据，是不关联任何block的。<br>
+NN根据文件的大小，根据块大小 副本数，计算要上传多少的块和对应哪些DN节点上。<br>
+最终这个信息返回给客户端【FSDataOutputStream】对象</p>
+</li>
+<li>
+<p>Client 调用客户端【FSDataOutputStream】对象的write方法，</p>
+<p>根据【副本放置策略】，将第一个块的第一个副本写到DN1，写完复制到DN2，写完再复制到DN3.<br>
+当第三个副本写完，就返回一个ack package确认包给DN2,DN2接收到ack 加上自己写完，<br>
+发送ack给DN1，DN1接收到ack加上自己写完，就发送ack给客户端【FSDataOutputStream】对象，<br>
+告诉它第一个块三副本写完了。<br>
+以此类推。</p>
+</li>
+<li>
+<p>当所有的块全部写完，Client调用【FSDataOutputStream】对象的close方法，</p>
+<p>关闭输出流。再次调用FileSystem.complete方法 ，告诉nn文件写成功。</p>
+<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5CHDFS%E8%AF%BB%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
+</li>
+</ul>
+<p>伪分布式 1台dn，副本数参数必须设置是1吗？<br>
+设置2 也可以写，显示丢失一个副本</p>
+<p>生产上分布式  3台dn，副本数参数是3，如果其中一个dn挂了，数据是否能够写入？<br>
+可以的</p>
+<p>生产上分布式  &gt;3台dn，副本数参数是3，如果其中一个dn挂了，数据是否能够写入？<br>
+肯定写</p>
+<h4 id="hdfs读流程">HDFS读流程</h4>
+<ul>
+<li>
+<p>Client调用FileSystem的open(filePath)，</p>
+<p>与NN进行【rpc】通信，返回该文件的部分或者全部的block列表<br>
+也就是返回【FSDataIntputStream】对象</p>
+</li>
+<li>
+<p>Client调度【FSDataIntputStream】对象的read方法，</p>
+<p>与第一个块的最近的DN的进行读取，读取完成后，会check，假如ok就关闭与DN通信。<br>
+假如不ok，就会记录块+DN的信息，下次就不从这个节点读取。那么从第二个节点读取。</p>
+<p>然后与第二个块的最近的DN的进行读取，以此类推。<br>
+假如当block的列表全部读取完成，文件还没结束，就调用FileSystem从NN获取下一批次的block列表。</p>
+</li>
+<li>
+<p>Client调用【FSDataIntputStream】对象的close方法，关闭输入流。</p>
+</li>
+</ul>
+<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5CHDFS%E5%86%99%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
+<h4 id="副本放置策略">副本放置策略</h4>
+<p><a href="https://www.bilibili.com/video/BV1eE411p7un" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1eE411p7un</a></p>
+<p>生产上读写操作  尽量选择DN节点操作<br>
+第一个副本：<br>
+放置在上传的DN节点上，就近原则，节省IO<br>
+假如非DN节点，就随机挑选一个磁盘不太慢，cpu不太忙的节点。</p>
+<p>第二个副本:<br>
+放置在第一个副本的不同机架上的某个节点</p>
+<p>第三个副本:<br>
+与第二个副本放置同一个机架的不同节点上。</p>
+<p>如果副本数设置更多，随机放。</p>
 
                 
 
@@ -231,12 +340,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">&larr; Previous Post</a>
+                            <a href="/article/hadoop(一)入门/" data-toggle="tooltip" data-placement="top" title="hadoop(一)入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/rundeck入门/" data-toggle="tooltip" data-placement="top" title="rundeck入门">Next Post &rarr;</a>
+                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -286,7 +395,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#jdk的linux安装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">jdk&#x7684;linux&#x5B89;&#x88C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1上传安装包"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.&#x4E0A;&#x4F20;&#x5B89;&#x88C5;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2创建文件夹"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2.&#x521B;&#x5EFA;&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3解压"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">3.&#x89E3;&#x538B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4赋权"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">4.&#x8D4B;&#x6743;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5环境变量配置"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">5.&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x914D;&#x7F6E;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoop三"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoop(&#x4E09;)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs主从架构"><span class="toc-nav-number">1.0.1.</span> <span class="toc-nav-text">HDFS&#x4E3B;&#x4ECE;&#x67B6;&#x6784;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#namenode-nn-名称节点"><span class="toc-nav-number">1.0.1.1.</span> <span class="toc-nav-text">namenode &#xFF1A;nn &#x540D;&#x79F0;&#x8282;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#secondary-namenode-snn-第二名称节点"><span class="toc-nav-number">1.0.1.2.</span> <span class="toc-nav-text">secondary namenode: snn &#x7B2C;&#x4E8C;&#x540D;&#x79F0;&#x8282;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#datanode-数据节点-dn"><span class="toc-nav-number">1.0.1.3.</span> <span class="toc-nav-text">datanode&#xFF1A; &#x6570;&#x636E;&#x8282;&#x70B9; dn</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs写流程"><span class="toc-nav-number">1.0.2.</span> <span class="toc-nav-text">HDFS&#x5199;&#x6D41;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs读流程"><span class="toc-nav-number">1.0.3.</span> <span class="toc-nav-text">HDFS&#x8BFB;&#x6D41;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#副本放置策略"><span class="toc-nav-number">1.0.4.</span> <span class="toc-nav-text">&#x526F;&#x672C;&#x653E;&#x7F6E;&#x7B56;&#x7565;</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>

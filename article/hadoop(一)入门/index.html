@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          hadoop入门 - lixuelian | Blog
+          hadoop(一)入门 - lixuelian | Blog
         
     </title>
 
-    <link rel="canonical" href="http://psychelee.github.io/article/hadoop入门/">
+    <link rel="canonical" href="http://psychelee.github.io/article/hadoop(一)入门/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#shell" title="shell">shell</a>
                             
                         </div>
-                        <h1>hadoop入门</h1>
+                        <h1>hadoop(一)入门</h1>
                         <h2 class="subheading">This is about jdk</h2>
                         <span class="meta">
                             Posted by PsycheLee on
-                            2015-09-08
+                            2015-10-08
                         </span>
                     </div>
                 
@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -212,7 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="hadoop入门">hadoop入门</h2>
+                <h2 id="hadoop一入门">hadoop(一)入门</h2>
 <h3 id="创建用户和文件夹">创建用户和文件夹</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# useradd bigdata</span><br><span class="line">[root@hadoop001 ~]# id bigdata</span><br><span class="line">uid=1000(bigdata) gid=1000(bigdata) groups=1000(bigdata)</span><br><span class="line"></span><br><span class="line">[root@hadoop001 ~]# su - bigdata</span><br><span class="line">[bigdata@hadoop001 ~]$  mkdir tmp sourcecode software shell log lib  data app</span><br></pre></td></tr></table></figure>
 <h3 id="安装部署jdk">安装部署jdk</h3>
@@ -248,7 +248,13 @@ ln -s /data01/hadoop-hdfs /app/log/hadoop-hdfs</p>
 <h3 id="web界面">web界面</h3>
 <p><a href="http://106.14" target="_blank" rel="noopener">http://106.14</a>…23.129:50070/dfshealth.html#tab-overview</p>
 <ul>
-<li>50070端口要去安全组配置</li>
+<li>
+<p>50070端口要去安全组配置</p>
+</li>
+<li>
+<p>更改默认端口50070为50071</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 hadoop]$ vi hdfs-site.xml </span><br><span class="line">##增加一组参数配置</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.http-address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hadoop001:50071&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">[bigdata@hadoop001 hadoop]$ stop-dfs.sh</span><br><span class="line">[bigdata@hadoop001 hadoop]$ start-dfs.sh</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h3 id="创建hdfs文件夹">创建hdfs文件夹</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# vi /etc/profile</span><br><span class="line">export HADOOP_HOME=/home/bigdata/app/hadoop</span><br><span class="line">export PATH=$&#123;HADOOP_HOME&#125;/bin:$&#123;HADOOP_HOME&#125;/sbin:$PATH</span><br></pre></td></tr></table></figure>
@@ -280,12 +286,12 @@ dfs.namenode.checkpoint.dir --&gt; file://${hadoop.tmp.dir}/dfs/namesecondary</p
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/shell脚本入门/" data-toggle="tooltip" data-placement="top" title="shell脚本入门">&larr; Previous Post</a>
+                            <a href="/article/hadoop(二)yarn部署/" data-toggle="tooltip" data-placement="top" title="hadoop(二)yarn部署">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/rundeck入门/" data-toggle="tooltip" data-placement="top" title="rundeck入门">Next Post &rarr;</a>
+                            <a href="/article/hadoop(三)读写流程/" data-toggle="tooltip" data-placement="top" title="hadoop(三)">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -335,7 +341,7 @@ dfs.namenode.checkpoint.dir --&gt; file://${hadoop.tmp.dir}/dfs/namesecondary</p
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoop入门"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoop&#x5165;&#x95E8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建用户和文件夹"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;&#x7528;&#x6237;&#x548C;&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装部署jdk"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;&#x90E8;&#x7F72;jdk</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hadoop解压和软连接"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">hadoop&#x89E3;&#x538B;&#x548C;&#x8F6F;&#x8FDE;&#x63A5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#软连接作用"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x8F6F;&#x8FDE;&#x63A5;&#x4F5C;&#x7528;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#环境变量配置"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x914D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置ssh无密码认证"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;ssh&#x65E0;&#x5BC6;&#x7801;&#x8BA4;&#x8BC1;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#修改配置hdsf的三个进程都以hadoop001启动"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">&#x4FEE;&#x6539;&#x914D;&#x7F6E;,hdsf&#x7684;&#x4E09;&#x4E2A;&#x8FDB;&#x7A0B;&#x90FD;&#x4EE5;hadoop001&#x542F;&#x52A8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#nn配置修改"><span class="toc-nav-number">1.6.1.</span> <span class="toc-nav-text">nn&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#snn配置修改"><span class="toc-nav-number">1.6.2.</span> <span class="toc-nav-text">snn&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dn配置修改"><span class="toc-nav-number">1.6.3.</span> <span class="toc-nav-text">dn&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#格式化"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">&#x683C;&#x5F0F;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#启动"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">&#x542F;&#x52A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#web界面"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">web&#x754C;&#x9762;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建hdfs文件夹"><span class="toc-nav-number">1.10.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;hdfs&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#案例"><span class="toc-nav-number">1.11.</span> <span class="toc-nav-text">&#x6848;&#x4F8B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#准备input文件并上传"><span class="toc-nav-number">1.11.1.</span> <span class="toc-nav-text">&#x51C6;&#x5907;input&#x6587;&#x4EF6;&#x5E76;&#x4E0A;&#x4F20;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#运行jar包"><span class="toc-nav-number">1.11.2.</span> <span class="toc-nav-text">&#x8FD0;&#x884C;jar&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#查看结果"><span class="toc-nav-number">1.11.3.</span> <span class="toc-nav-text">&#x67E5;&#x770B;&#x7ED3;&#x679C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#注意"><span class="toc-nav-number">1.12.</span> <span class="toc-nav-text">&#x6CE8;&#x610F;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoop一入门"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoop(&#x4E00;)&#x5165;&#x95E8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建用户和文件夹"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;&#x7528;&#x6237;&#x548C;&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装部署jdk"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;&#x90E8;&#x7F72;jdk</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hadoop解压和软连接"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">hadoop&#x89E3;&#x538B;&#x548C;&#x8F6F;&#x8FDE;&#x63A5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#软连接作用"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">&#x8F6F;&#x8FDE;&#x63A5;&#x4F5C;&#x7528;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#环境变量配置"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x914D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置ssh无密码认证"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;ssh&#x65E0;&#x5BC6;&#x7801;&#x8BA4;&#x8BC1;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#修改配置hdsf的三个进程都以hadoop001启动"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">&#x4FEE;&#x6539;&#x914D;&#x7F6E;,hdsf&#x7684;&#x4E09;&#x4E2A;&#x8FDB;&#x7A0B;&#x90FD;&#x4EE5;hadoop001&#x542F;&#x52A8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#nn配置修改"><span class="toc-nav-number">1.6.1.</span> <span class="toc-nav-text">nn&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#snn配置修改"><span class="toc-nav-number">1.6.2.</span> <span class="toc-nav-text">snn&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#dn配置修改"><span class="toc-nav-number">1.6.3.</span> <span class="toc-nav-text">dn&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#格式化"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">&#x683C;&#x5F0F;&#x5316;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#启动"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">&#x542F;&#x52A8;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#web界面"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">web&#x754C;&#x9762;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建hdfs文件夹"><span class="toc-nav-number">1.10.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;hdfs&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#案例"><span class="toc-nav-number">1.11.</span> <span class="toc-nav-text">&#x6848;&#x4F8B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#准备input文件并上传"><span class="toc-nav-number">1.11.1.</span> <span class="toc-nav-text">&#x51C6;&#x5907;input&#x6587;&#x4EF6;&#x5E76;&#x4E0A;&#x4F20;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#运行jar包"><span class="toc-nav-number">1.11.2.</span> <span class="toc-nav-text">&#x8FD0;&#x884C;jar&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#查看结果"><span class="toc-nav-number">1.11.3.</span> <span class="toc-nav-text">&#x67E5;&#x770B;&#x7ED3;&#x679C;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#注意"><span class="toc-nav-number">1.12.</span> <span class="toc-nav-text">&#x6CE8;&#x610F;</span></a></li></ol></li></ol>
         
         </div>
       </aside>

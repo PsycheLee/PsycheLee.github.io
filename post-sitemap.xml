@@ -7,16 +7,64 @@
     </url>
 
     <url>
-        <loc>http://psychelee.github.io/article/yarn%E9%83%A8%E7%BD%B2/</loc>
-        <lastmod>2020-11-30T11:52:09.510Z</lastmod>
+        <loc>http://psychelee.github.io/article/hadoop(%E5%85%AD)%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98/</loc>
+        <lastmod>2020-12-11T15:11:08.393Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
     </url>
 
     <url>
-        <loc>http://psychelee.github.io/article/hadoop%E5%85%A5%E9%97%A8/</loc>
-        <lastmod>2020-11-30T11:51:39.650Z</lastmod>
+        <loc>http://psychelee.github.io/article/1/</loc>
+        <lastmod>2020-12-11T14:06:53.335Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hadoop(%E4%B8%89)%E8%AF%BB%E5%86%99%E6%B5%81%E7%A8%8B/</loc>
+        <lastmod>2020-12-11T13:50:50.988Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hive%E5%85%A5%E9%97%A8/</loc>
+        <lastmod>2020-12-06T14:49:12.669Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/MySQL%E9%83%A8%E7%BD%B2/</loc>
+        <lastmod>2020-12-05T14:23:07.994Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hadoop(%E4%B8%80)%E5%85%A5%E9%97%A8/</loc>
+        <lastmod>2020-12-05T14:22:58.658Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hadoop(%E5%9B%9B)HDFS%E5%91%BD%E4%BB%A4/</loc>
+        <lastmod>2020-11-30T14:45:03.575Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hadoop(%E4%BA%8C)yarn%E9%83%A8%E7%BD%B2/</loc>
+        <lastmod>2020-11-30T13:49:33.343Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -24,7 +72,7 @@
 
     <url>
         <loc>http://psychelee.github.io/article/rundeck%E5%85%A5%E9%97%A8/</loc>
-        <lastmod>2020-11-30T11:51:16.303Z</lastmod>
+        <lastmod>2020-11-30T12:38:19.507Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -33,14 +81,6 @@
     <url>
         <loc>http://psychelee.github.io/article/shell%E8%84%9A%E6%9C%AC%E5%85%A5%E9%97%A8/</loc>
         <lastmod>2020-11-28T01:53:51.379Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://psychelee.github.io/article/MySQL%E9%83%A8%E7%BD%B2/</loc>
-        <lastmod>2020-11-28T01:53:42.800Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 

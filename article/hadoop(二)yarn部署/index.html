@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          yarn部署 - lixuelian | Blog
+          hadoop(二)yarn部署 - lixuelian | Blog
         
     </title>
 
-    <link rel="canonical" href="http://psychelee.github.io/article/yarn部署/">
+    <link rel="canonical" href="http://psychelee.github.io/article/hadoop(二)yarn部署/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#shell" title="shell">shell</a>
                             
                         </div>
-                        <h1>yarn部署</h1>
+                        <h1>hadoop(二)yarn部署</h1>
                         <h2 class="subheading">This is about jdk</h2>
                         <span class="meta">
                             Posted by PsycheLee on
-                            2015-09-08
+                            2015-11-08
                         </span>
                     </div>
                 
@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -212,7 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="yarn入门">yarn入门</h2>
+                <h2 id="hadoop二yarn部署">hadoop(二)yarn部署</h2>
 <h3 id="配置修改">配置修改</h3>
 <h4 id="mapred-sitexml">mapred-site.xml</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 hadoop]$ pwd</span><br><span class="line">/home/bigdata/app/hadoop/etc/hadoop</span><br><span class="line">[bigdata@hadoop001 hadoop]$ cp mapred-site.xml.template mapred-site.xml</span><br><span class="line">[bigdata@hadoop001 hadoop]$ vi mapred-site.xml</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
@@ -277,7 +277,7 @@ ps -ef| grep xxx 查看是正确的<br>
 比如su - hdfs(有可能你切换不过去，需要/etc/passwd文件的修正)<br>
 再执行jps命令</p>
 <h4 id="jps文件删除之后不影响服务重启">JPS文件删除之后不影响服务重启</h4>
-<h3 id="pid文件">PID文件</h3>
+<h4 id="pid文件">PID文件</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 ~]$ cd /tmp</span><br><span class="line">[bigdata@hadoop001 tmp]$ ll</span><br><span class="line">total 60</span><br><span class="line">srwxr-xr-x 1 root      root         0 Nov 28 08:52 Aegis-&lt;Guid(5A2C30A2-A87D-490A-9281-6765EDAD7CBA)&gt;</span><br><span class="line">-rw-rw-r-- 1 bigdata   bigdata      5 Nov 28 11:36 hadoop-bigdata-datanode.pid</span><br><span class="line">-rw-rw-r-- 1 bigdata   bigdata      5 Nov 28 11:36 hadoop-bigdata-namenode.pid</span><br><span class="line">-rw-rw-r-- 1 bigdata   bigdata      5 Nov 28 11:36 hadoop-bigdata-secondarynamenode.pid</span><br><span class="line">-rw-rw-r-- 1 bigdata   bigdata      5 Nov 28 14:01 yarn-bigdata-nodemanager.pid</span><br><span class="line">-rw-rw-r-- 1 bigdata   bigdata      5 Nov 28 14:01 yarn-bigdata-resourcemanager.pid</span><br></pre></td></tr></table></figure>
 <p>测试删除PID文件 影响重启</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 tmp]$ mv hadoop-bigdata-datanode.pid hadoop-bigdata-datanode.pid.bak</span><br><span class="line">[bigdata@hadoop001 tmp]$ jps</span><br><span class="line">3271 DataNode</span><br><span class="line">3144 NameNode</span><br><span class="line">7852 NodeManager</span><br><span class="line">7741 ResourceManager</span><br><span class="line">8365 Jps</span><br><span class="line">[bigdata@hadoop001 tmp]$ cd </span><br><span class="line">[bigdata@hadoop001 ~]$ sh stop-dfs.sh</span><br><span class="line">20/11/28 14:25:32 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line">Stopping namenodes on [hadoop001]</span><br><span class="line">hadoop001: stopping namenode</span><br><span class="line">hadoop001: no datanode to stop</span><br><span class="line">Stopping secondary namenodes [hadoop001]</span><br><span class="line">hadoop001: no secondarynamenode to stop</span><br><span class="line">20/11/28 14:25:39 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line">[bigdata@hadoop001 ~]$ jps</span><br><span class="line">3271 DataNode</span><br><span class="line">8680 Jps</span><br><span class="line">7852 NodeManager</span><br><span class="line">7741 ResourceManager</span><br><span class="line">[bigdata@hadoop001 ~]$ ps -ef|grep 3271</span><br><span class="line">bigdata   3271     1  0 11:36 ?        00:00:14 /usr/java/jdk1.8.0_181/bin/java -Dproc_datanode -Xmx1000m -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs -Dhadoop.log.file=hadoop.log -Dhadoop.home.dir=/home/bigdata/app/hadoop-2.6.0-cdh5.16.2 -Dhadoop.id.str=bigdata -Dhadoop.root.logger=INFO,console -Djava.library.path=/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/lib/native -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Stack=true -Dhadoop.log.dir=/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs -Dhadoop.log.file=hadoop-bigdata-datanode-hadoop001.log -Dhadoop.home.dir=/home/bigdata/app/hadoop-2.6.0-cdh5.16.2 -Dhadoop.id.str=bigdata -Dhadoop.root.logger=INFO,RFA -Djava.library.path=/home/bigdata/app/hadoop-2.6.0-cdh5.16.2/lib/native -Dhadoop.policy.file=hadoop-policy.xml -Djava.net.preferIPv4Stack=true -server -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=ERROR,RFAS -Dhadoop.security.logger=INFO,RFAS org.apache.hadoop.hdfs.server.datanode.DataNode</span><br><span class="line">bigdata   8693  3680  0 14:26 pts/1    00:00:00 grep --color=auto 3271</span><br></pre></td></tr></table></figure>
@@ -330,12 +330,12 @@ b.数据已经到hdfs，就定时的  业务低谷期，去合并冷文件<br>
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/rundeck入门/" data-toggle="tooltip" data-placement="top" title="rundeck入门">&larr; Previous Post</a>
+                            <a href="/article/hive入门/" data-toggle="tooltip" data-placement="top" title="hive入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/MySQL部署/" data-toggle="tooltip" data-placement="top" title="MySQL部署">Next Post &rarr;</a>
+                            <a href="/article/hadoop(一)入门/" data-toggle="tooltip" data-placement="top" title="hadoop(一)入门">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -385,7 +385,7 @@ b.数据已经到hdfs，就定时的  业务低谷期，去合并冷文件<br>
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#yarn入门"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">yarn&#x5165;&#x95E8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置修改"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mapred-sitexml"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">mapred-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#yarn-sitexml"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">yarn-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#启动"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">&#x542F;&#x52A8;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#词频统计"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x8BCD;&#x9891;&#x7EDF;&#x8BA1;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#挖矿"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x6316;&#x77FF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#jps命令"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">JPS&#x547D;&#x4EE4;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#位置"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">&#x4F4D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#使用"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#对应的标识文件存储在哪里"><span class="toc-nav-number">1.4.3.</span> <span class="toc-nav-text">&#x5BF9;&#x5E94;&#x7684;&#x6807;&#x8BC6;&#x6587;&#x4EF6;&#x5B58;&#x50A8;&#x5728;&#x54EA;&#x91CC;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#哪个用户可以查看"><span class="toc-nav-number">1.4.4.</span> <span class="toc-nav-text">&#x54EA;&#x4E2A;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x67E5;&#x770B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#process-information-unavailable描述"><span class="toc-nav-number">1.4.5.</span> <span class="toc-nav-text">process information unavailable&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#jps文件删除之后不影响服务重启"><span class="toc-nav-number">1.4.6.</span> <span class="toc-nav-text">JPS&#x6587;&#x4EF6;&#x5220;&#x9664;&#x4E4B;&#x540E;&#x4E0D;&#x5F71;&#x54CD;&#x670D;&#x52A1;&#x91CD;&#x542F;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#pid文件"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">PID&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#块-block"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">&#x5757; block</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoop二yarn部署"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoop(&#x4E8C;)yarn&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置修改"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;&#x4FEE;&#x6539;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#mapred-sitexml"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">mapred-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#yarn-sitexml"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">yarn-site.xml</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#启动"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">&#x542F;&#x52A8;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#词频统计"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x8BCD;&#x9891;&#x7EDF;&#x8BA1;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#挖矿"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x6316;&#x77FF;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#jps命令"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">JPS&#x547D;&#x4EE4;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#位置"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">&#x4F4D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#使用"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#对应的标识文件存储在哪里"><span class="toc-nav-number">1.4.3.</span> <span class="toc-nav-text">&#x5BF9;&#x5E94;&#x7684;&#x6807;&#x8BC6;&#x6587;&#x4EF6;&#x5B58;&#x50A8;&#x5728;&#x54EA;&#x91CC;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#哪个用户可以查看"><span class="toc-nav-number">1.4.4.</span> <span class="toc-nav-text">&#x54EA;&#x4E2A;&#x7528;&#x6237;&#x53EF;&#x4EE5;&#x67E5;&#x770B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#process-information-unavailable描述"><span class="toc-nav-number">1.4.5.</span> <span class="toc-nav-text">process information unavailable&#x63CF;&#x8FF0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#jps文件删除之后不影响服务重启"><span class="toc-nav-number">1.4.6.</span> <span class="toc-nav-text">JPS&#x6587;&#x4EF6;&#x5220;&#x9664;&#x4E4B;&#x540E;&#x4E0D;&#x5F71;&#x54CD;&#x670D;&#x52A1;&#x91CD;&#x542F;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#pid文件"><span class="toc-nav-number">1.4.7.</span> <span class="toc-nav-text">PID&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#块-block"><span class="toc-nav-number">1.4.8.</span> <span class="toc-nav-text">&#x5757; block</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>

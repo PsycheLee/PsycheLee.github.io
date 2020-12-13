@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -283,12 +283,12 @@
 <h3 id="邮箱设置">邮箱设置</h3>
 <p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C9.png" alt="1606641558729"></p>
 <p>开启下面的服务</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C10" alt="1606641623059"></p>
+<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C10.png" alt="1606641623059"></p>
 <p>生成授权码</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C12" alt="1606641720991"></p>
+<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C12.png" alt="1606641720991"></p>
 <p>muciyrwfnnpcbcif</p>
 <h3 id="安装postfix服务">安装postfix服务</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# service sendmail status</span><br><span class="line">Redirecting to /bin/systemctl status  sendmail.service</span><br><span class="line">Unit sendmail.service could not be found.</span><br><span class="line">[root@hadoop001 ~]# yum install -y postfix</span><br><span class="line">[root@hadoop001 ~]# yum install -y sendmail</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# service sendmail status</span><br><span class="line">Redirecting to /bin/systemctl status  sendmail.service</span><br><span class="line">Unit sendmail.service could not be found.</span><br><span class="line">[root@hadoop001 ~]# yum install -y postfix</span><br><span class="line">[root@hadoop001 ~]# yum install -y mailx</span><br></pre></td></tr></table></figure>
 <h4 id="启动">启动</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# service postfix restart</span><br><span class="line">Redirecting to /bin/systemctl restart  postfix.service</span><br><span class="line">Job for postfix.service failed because the control process exited with error code. See &quot;systemctl status postfix.service&quot; and &quot;journalctl -xe&quot; for details.</span><br><span class="line">###报错, 定位错误</span><br><span class="line">[root@hadoop001 ~]# which postfix</span><br><span class="line">/usr/sbin/postfix</span><br><span class="line">[root@hadoop001 ~]# postfix check</span><br><span class="line">postfix: fatal: parameter inet_interfaces: no local interface found for ::1</span><br><span class="line">###可能会报其他错误mysql相关的如果卸载过MySQLclient</span><br><span class="line">解决:rpm -qa|grep mysql</span><br><span class="line">	yum install mysql-libs</span><br></pre></td></tr></table></figure>
 <h4 id="修改配置">修改配置</h4>
@@ -319,7 +319,7 @@
 </ul>
 <h3 id="rundeck集成">rundeck集成</h3>
 <h4 id="脚本准备">脚本准备</h4>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 rundeck]$ vi date.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">date</span><br><span class="line"></span><br><span class="line">EMAIL=549501669@qq.com,853830320@qq.com</span><br><span class="line"></span><br><span class="line">echo -e &quot;`date &quot;+%Y-%m-%d %H:%M:%S&quot;` :Check the attachment&quot;\</span><br><span class="line">| mailx \</span><br><span class="line">-r &quot;From : alertAdmin&lt;549501669@qq.com&gt;&quot;\</span><br><span class="line">-a test.log\</span><br><span class="line">-s &quot;Critical:KSSH fail sql.&quot; $&#123;EMAIL&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 rundeck]$ vi date.sh</span><br><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">date</span><br><span class="line"></span><br><span class="line">EMAIL=549501669@qq.com,853830320@qq.com</span><br><span class="line"></span><br><span class="line">echo -e &quot;`date &quot;+%Y-%m-%d %H:%M:%S&quot;` :Check the attachment&quot;\</span><br><span class="line">| mailx \</span><br><span class="line">-r &quot;From: alertAdmin&lt;549501669@qq.com&gt;&quot;\</span><br><span class="line">-a test.log\</span><br><span class="line">-s &quot;Critical:KSSH fail sql.&quot; $&#123;EMAIL&#125;</span><br></pre></td></tr></table></figure>
 
                 
 
@@ -328,12 +328,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/hadoop入门/" data-toggle="tooltip" data-placement="top" title="hadoop入门">&larr; Previous Post</a>
+                            <a href="/article/jdk安装/" data-toggle="tooltip" data-placement="top" title="jdk的linux安装">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/yarn部署/" data-toggle="tooltip" data-placement="top" title="yarn部署">Next Post &rarr;</a>
+                            <a href="/article/shell脚本入门/" data-toggle="tooltip" data-placement="top" title="shell脚本入门">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
