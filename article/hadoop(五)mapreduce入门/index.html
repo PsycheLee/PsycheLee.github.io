@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          hadoop(三) - lixuelian | Blog
+          mr on yarn流程/yarn架构设计 - lixuelian | Blog
         
     </title>
 
-    <link rel="canonical" href="http://psychelee.github.io/article/hadoop(三)读写流程/">
+    <link rel="canonical" href="http://psychelee.github.io/article/hadoop(五)mapreduce入门/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#shell" title="shell">shell</a>
                             
                         </div>
-                        <h1>hadoop(三)</h1>
-                        <h2 class="subheading">This is about jdk</h2>
+                        <h1>mr on yarn流程/yarn架构设计</h1>
+                        <h2 class="subheading">this is about mr on yarn</h2>
                         <span class="meta">
                             Posted by PsycheLee on
-                            2015-09-08
+                            2018-09-08
                         </span>
                     </div>
                 
@@ -212,126 +212,66 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="hadoop三">hadoop(三)</h2>
-<h4 id="hdfs主从架构">HDFS主从架构</h4>
-<h5 id="namenode-nn-名称节点">namenode ：nn 名称节点</h5>
-<ul>
-<li>
-<p>文件的名称</p>
-</li>
-<li>
-<p>文件的目录结构</p>
-</li>
-<li>
-<p>文件的属性  权限 副本数 创建时间</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 ~]$ hdfs dfs -ls /</span><br><span class="line"></span><br><span class="line">20/11/25 21:16:55 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line"></span><br><span class="line">Found 3 items</span><br><span class="line"></span><br><span class="line">drwx------   - hadoop supergroup          0 2020-11-22 19:52 /tmp</span><br><span class="line"></span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2020-11-21 21:50 /user</span><br><span class="line"></span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2020-11-22 19:52 /wordcount</span><br><span class="line"></span><br><span class="line">[bigdata@hadoop001 ~]$</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>一个文件被对应切割哪些数据块（包含副本数的块） ==》 对应分布在哪些datanode</p>
-<p>blockmap 块映射  nn是不会持久化存储这种映射关系<br>
-是通过集群的启动和运行时，dn定期汇报blockreport给nn，然后在内存中动态维护这种映射关系。</p>
-</li>
-</ul>
-<p><strong>作用:</strong><br>
-管理文件系统的命名空间，其实就是维护文件系统树的文件和文件夹<br>
-镜像文件 fsimage<br>
-编辑日志文件 editlogs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 19:04 edits_0000000000000000511-0000000000000000512</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 20:04 edits_0000000000000000513-0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 21:04 edits_0000000000000000515-0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop 1048576 Nov 25 21:04 edits_inprogress_0000000000000000517</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 20:04 fsimage_0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 20:04 fsimage_0000000000000000514.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 21:04 fsimage_0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 21:04 fsimage_0000000000000000516.md5</span><br></pre></td></tr></table></figure>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5Chdfsarchitecture.png" alt="hdfsarchitecture"></p>
-<h5 id="secondary-namenode-snn-第二名称节点">secondary namenode: snn 第二名称节点</h5>
-<ul>
-<li>
-<p>fsimage editlog文件拿过来合并  备份 推送给nn</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 19:04 edits_0000000000000000511-0000000000000000512</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 20:04 edits_0000000000000000513-0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 21:04 edits_0000000000000000515-0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 20:04 fsimage_0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 20:04 fsimage_0000000000000000514.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 21:04 fsimage_0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 21:04 fsimage_0000000000000000516.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop     200 Nov 25 21:04 VERSION</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>将老大的<br>
-fsimage_0000000000000000514<br>
-edits_0000000000000000515-0000000000000000516  ==》检测点动作 checkpoint<br>
-合并 fsimage_0000000000000000516  将516推送给nn<br>
-而新的读写记录则在 edits_inprogress_0000000000000000517编辑日志里</p>
-<p>dfs.namenode.checkpoint.period  3600<br>
-dfs.namenode.checkpoint.txns    1000000</p>
-<p>早期为了解决nn是单点的，单点故障，增加一个snn，1小时的checkpoint<br>
-虽然能够减轻单点故障的带来的数据丢失风险，但是生产上不允许使用snn</p>
-<p>11:00 checkpoint<br>
-11:30  数据一直在写 突然nn硬盘挂了  无法恢复<br>
-拿snn节点的最新的fsimage，那么只能恢复11点的数据</p>
-<p>在生产上是不允许snn，是使用HA 高可靠，是通过配置另外一个实时的备份nn节点，<br>
-随时等待老大active nn 挂掉，然后成为老大</p>
-<h5 id="datanode-数据节点-dn">datanode： 数据节点 dn</h5>
-<ul>
-<li>存储数据块 和 数据块的校验</li>
-</ul>
-<p>[bigdata@hadoop001 subdir0]$ pwd<br>
-/home/hadoop/tmp/dfs/data/current/BP-1245831-192.168.0.3-1605965291938/current/finalized/subdir0/subdir0<br>
-[bigdata@hadoop001 subdir0]$</p>
-<ul>
-<li>每隔一定的时间去发送blockreport</li>
-</ul>
-<p>dfs.blockreport.intervalMsec          21600000=6h<br>
-dfs.datanode.directoryscan.interval   21600=6h</p>
-<p>补充:<a href="https://ruozedata.github.io/2019/06/06/%E7%94%9F%E4%BA%A7HDFS%20Block%E6%8D%9F%E5%9D%8F%E6%81%A2%E5%A4%8D%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5(%E5%90%AB%E6%80%9D%E8%80%83%E9%A2%98)/" target="_blank" rel="noopener">https://ruozedata.github.io/2019/06/06/生产HDFS Block损坏恢复最佳实践(含思考题)/</a></p>
-<h4 id="hdfs写流程">HDFS写流程</h4>
-<p>对用户是无感知的</p>
-<ul>
-<li>
-<p>HDFS Client调用FileSystem.create(filePath)方法，去和NN进行【RPC】通信。</p>
-<p>NN会去check这个文件是否存在，是否有权限创建这个文件。<br>
-假如都可以，就创建一个新的文件，但是这时没有数据，是不关联任何block的。<br>
-NN根据文件的大小，根据块大小 副本数，计算要上传多少的块和对应哪些DN节点上。<br>
-最终这个信息返回给客户端【FSDataOutputStream】对象</p>
-</li>
-<li>
-<p>Client 调用客户端【FSDataOutputStream】对象的write方法，</p>
-<p>根据【副本放置策略】，将第一个块的第一个副本写到DN1，写完复制到DN2，写完再复制到DN3.<br>
-当第三个副本写完，就返回一个ack package确认包给DN2,DN2接收到ack 加上自己写完，<br>
-发送ack给DN1，DN1接收到ack加上自己写完，就发送ack给客户端【FSDataOutputStream】对象，<br>
-告诉它第一个块三副本写完了。<br>
-以此类推。</p>
-</li>
-<li>
-<p>当所有的块全部写完，Client调用【FSDataOutputStream】对象的close方法，</p>
-<p>关闭输出流。再次调用FileSystem.complete方法 ，告诉nn文件写成功。</p>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5CHDFS%E8%AF%BB%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
-</li>
-</ul>
-<p>伪分布式 1台dn，副本数参数必须设置是1吗？<br>
-设置2 也可以写，显示丢失一个副本</p>
-<p>生产上分布式  3台dn，副本数参数是3，如果其中一个dn挂了，数据是否能够写入？<br>
-可以的</p>
-<p>生产上分布式  &gt;3台dn，副本数参数是3，如果其中一个dn挂了，数据是否能够写入？<br>
-肯定写</p>
-<h4 id="hdfs读流程">HDFS读流程</h4>
-<ul>
-<li>
-<p>Client调用FileSystem的open(filePath)，</p>
-<p>与NN进行【rpc】通信，返回该文件的部分或者全部的block列表<br>
-也就是返回【FSDataIntputStream】对象</p>
-</li>
-<li>
-<p>Client调度【FSDataIntputStream】对象的read方法，</p>
-<p>与第一个块的最近的DN的进行读取，读取完成后，会check，假如ok就关闭与DN通信。<br>
-假如不ok，就会记录块+DN的信息，下次就不从这个节点读取。那么从第二个节点读取。</p>
-<p>然后与第二个块的最近的DN的进行读取，以此类推。<br>
-假如当block的列表全部读取完成，文件还没结束，就调用FileSystem从NN获取下一批次的block列表。</p>
-</li>
-<li>
-<p>Client调用【FSDataIntputStream】对象的close方法，关闭输入流。</p>
-</li>
-</ul>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5CHDFS%E5%86%99%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
-<h4 id="副本放置策略">副本放置策略</h4>
-<p><a href="https://www.bilibili.com/video/BV1eE411p7un" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1eE411p7un</a></p>
-<p>生产上读写操作  尽量选择DN节点操作<br>
-第一个副本：<br>
-放置在上传的DN节点上，就近原则，节省IO<br>
-假如非DN节点，就随机挑选一个磁盘不太慢，cpu不太忙的节点。</p>
-<p>第二个副本:<br>
-放置在第一个副本的不同机架上的某个节点</p>
-<p>第三个副本:<br>
-与第二个副本放置同一个机架的不同节点上。</p>
-<p>如果副本数设置更多，随机放。</p>
+                <h2 id="mr-on-yarn流程yarn架构设计">mr on yarn流程/yarn架构设计</h2>
+<h3 id="mapreduce">MapReduce</h3>
+<h4 id="分布式计算框架">分布式计算框架</h4>
+<h5 id="map映射">map映射</h5>
+<p>指的是一组数据按照规则映射为一组<br>
+string=a b a<br>
+(a,1)<br>
+(b,1)<br>
+(a,1)</p>
+<h5 id="reduce-归约-汇总">reduce 归约  汇总</h5>
+<p>​    (a,2)<br>
+(b,1)</p>
+<h5 id="shuffle-洗牌">【shuffle】 洗牌</h5>
+<p>​	数据根据key进行网络传输规整到一起，按规则计算<br>
+	hadoop001   id=1 name=a  一百万条<br>
+		2      b  		十万条</p>
+<p>​	hadoop002   id=1 name=a  一万条<br>
+		 3      c  		十万条</p>
+<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C5%5CWordCount.jpg" alt="WordCount"></p>
+<h3 id="mr-on-yarn流程yarn架构设计">mr on yarn流程/yarn架构设计</h3>
+<h4 id="container-容器">container 容器</h4>
+<p>虚拟化概念  是一定的内存和cpu的资源组合</p>
+<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C5%5Ccontainer.png" alt="container"></p>
+<p>100件货</p>
+<p>1个房间1g内存 1个人 vcore： 100h<br>
+1个房间1g内存 5个人 vcore： 20h<br>
+在内存够的情况下，适当增加cpu vcore来提升计算的并行度 ，提高效率</p>
+<p>预留 38G</p>
+<p>系统需要+预留未来新增服务所需内存,防止出现【oom-killer机制】</p>
+<p><a href="https://www.jianshu.com/p/85ac4bdcb9ba" target="_blank" rel="noopener">https://www.jianshu.com/p/85ac4bdcb9ba</a></p>
+<h4 id="流程">流程</h4>
+<p>1.Client 向RM提交应用程序，其中包含applicationmaster主程序和启动命令<br>
+2.applications manager 会为【应用程序分配第一个container容器】，来运行applicationmaster主程序<br>
+3.applicationmaster主程序就会向applications manager 注册，就可以做yarn的web界面上看到job的运行状态<br>
+4.applicationmaster主程序采取轮询的方式通过【rpc】协议向resourcescheduler，申请和领取资源(哪台机器 领取多少内存 多少cpu VCORE)</p>
+<h5 id="启动applicationmaster主程序领取资源">启动applicationmaster主程序，领取资源；</h5>
+<p>5.一旦applicationmaster主程序拿到资源的列表，就和对应的nm进程进行通信，要求启动container来运行task任务<br>
+6.nm就为task任务设置好运行的环境（container容器）,将任务启动命令写在脚本里，并且通过脚本启动任务task<br>
+7.各个container的task 任务(map task、reduce task任务)，通过【rpc】协议<br>
+向applicationmaster主程序进行汇报进度和状态，以此让applicationmaster主程序随时掌握task的运行状态。<br>
+当task任务运行失败，也会重启container任务<br>
+8.当所有的task任务全部完成，applicationmaster主程序会向applications manager 申请注销和关闭作业，这时在web界面查看任务是  是否完成 ，是成功还是失败。</p>
+<h5 id="运行任务直到任务完成">运行任务，直到任务完成。</h5>
+<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C5%5Cmr.png" alt="mr"></p>
+<h4 id="wordcount">wordcount</h4>
+<p>split规则:<br>
+块大小<br>
+1个文件 260M，128M  128M  4M</p>
+<p>文件个数<br>
+10个小文件  1M<br>
+1   1M  1<br>
+2   1M  1<br>
+10  1M  1</p>
+<p>= 10个 map</p>
+<p>10 container 容器   10G</p>
+<p>10个小文件 合并1个大文件 100M 1块<br>
+1 container        1G</p>
+<p>总结：小文件危害<br>
+不光光在存储上，小文件过多对 NN压力太大，<br>
+也会在计算上，造成资源的浪费, 所以需要做小文件合并</p>
 
                 
 
@@ -340,12 +280,12 @@ NN根据文件的大小，根据块大小 副本数，计算要上传多少的�
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/hadoop(一)入门/" data-toggle="tooltip" data-placement="top" title="hadoop(一)入门">&larr; Previous Post</a>
+                            <a href="/article/1/" data-toggle="tooltip" data-placement="top" title="标题">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">Next Post &rarr;</a>
+                            <a href="/article/hadoop(六)参数调优/" data-toggle="tooltip" data-placement="top" title="hadoop参数调优">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -395,7 +335,7 @@ NN根据文件的大小，根据块大小 副本数，计算要上传多少的�
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoop三"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoop(&#x4E09;)</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs主从架构"><span class="toc-nav-number">1.0.1.</span> <span class="toc-nav-text">HDFS&#x4E3B;&#x4ECE;&#x67B6;&#x6784;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#namenode-nn-名称节点"><span class="toc-nav-number">1.0.1.1.</span> <span class="toc-nav-text">namenode &#xFF1A;nn &#x540D;&#x79F0;&#x8282;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#secondary-namenode-snn-第二名称节点"><span class="toc-nav-number">1.0.1.2.</span> <span class="toc-nav-text">secondary namenode: snn &#x7B2C;&#x4E8C;&#x540D;&#x79F0;&#x8282;&#x70B9;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#datanode-数据节点-dn"><span class="toc-nav-number">1.0.1.3.</span> <span class="toc-nav-text">datanode&#xFF1A; &#x6570;&#x636E;&#x8282;&#x70B9; dn</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs写流程"><span class="toc-nav-number">1.0.2.</span> <span class="toc-nav-text">HDFS&#x5199;&#x6D41;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#hdfs读流程"><span class="toc-nav-number">1.0.3.</span> <span class="toc-nav-text">HDFS&#x8BFB;&#x6D41;&#x7A0B;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#副本放置策略"><span class="toc-nav-number">1.0.4.</span> <span class="toc-nav-text">&#x526F;&#x672C;&#x653E;&#x7F6E;&#x7B56;&#x7565;</span></a></li></ol></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mr-on-yarn流程yarn架构设计"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">mr on yarn&#x6D41;&#x7A0B;/yarn&#x67B6;&#x6784;&#x8BBE;&#x8BA1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mapreduce"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">MapReduce</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#分布式计算框架"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">&#x5206;&#x5E03;&#x5F0F;&#x8BA1;&#x7B97;&#x6846;&#x67B6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#map映射"><span class="toc-nav-number">1.1.1.1.</span> <span class="toc-nav-text">map&#x6620;&#x5C04;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#reduce-归约-汇总"><span class="toc-nav-number">1.1.1.2.</span> <span class="toc-nav-text">reduce &#x5F52;&#x7EA6;  &#x6C47;&#x603B;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#shuffle-洗牌"><span class="toc-nav-number">1.1.1.3.</span> <span class="toc-nav-text">&#x3010;shuffle&#x3011; &#x6D17;&#x724C;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#mr-on-yarn流程yarn架构设计"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">mr on yarn&#x6D41;&#x7A0B;/yarn&#x67B6;&#x6784;&#x8BBE;&#x8BA1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#container-容器"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">container &#x5BB9;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#流程"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">&#x6D41;&#x7A0B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#启动applicationmaster主程序领取资源"><span class="toc-nav-number">1.2.2.1.</span> <span class="toc-nav-text">&#x542F;&#x52A8;applicationmaster&#x4E3B;&#x7A0B;&#x5E8F;&#xFF0C;&#x9886;&#x53D6;&#x8D44;&#x6E90;&#xFF1B;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#运行任务直到任务完成"><span class="toc-nav-number">1.2.2.2.</span> <span class="toc-nav-text">&#x8FD0;&#x884C;&#x4EFB;&#x52A1;&#xFF0C;&#x76F4;&#x5230;&#x4EFB;&#x52A1;&#x5B8C;&#x6210;&#x3002;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#wordcount"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">wordcount</span></a></li></ol></li></ol></li></ol>
         
         </div>
       </aside>

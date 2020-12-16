@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -228,8 +228,60 @@
         </h3>
         <div class="post-content-preview">
             标题
-https://github.com/PsycheLee/PsycheLee.github.io/tree/master/article/1/17.png
+
+
 ...
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by PsycheLee on
+            2018-09-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#shell" title="shell">shell</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/hadoop(五)mapreduce入门/">
+        <h2 class="post-title">
+            
+                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
+                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
+                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
+                <font color=#F4711F>置顶</font>
+                <!-- <font color=#F89E8C>置顶</font>  -->
+                <!-- <font color=#1CB7ED>置顶</font>  -->
+                                 
+            mr on yarn流程/yarn架构设计
+        </h2>
+        <h3 class="post-subtitle">
+            this is about mr on yarn
+        </h3>
+        <div class="post-content-preview">
+            mr on yarn流程/yarn架构设计
+MapReduce
+分布式计算框架
+map映射
+指的是一组数据按照规则映射为一组
+string=a b a
+(a,1)
+(b,1)
+(a,1)
+reduce 归约  汇总
+​    (a,2)
+(b,1)
+【shuffle】 洗牌
+​	数据根据key进行网络传输规整到一起，按规则计算
+	hadoop001   id=1 name=a  一百万条
+	......
         </div>
     </a>
     
@@ -331,6 +383,45 @@ jdk1.8
         <p class="post-meta" style="margin: 10px 0;">
             Posted by PsycheLee on
             2015-09-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#shell" title="shell">shell</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/2020-12-13 hive入门 2/">
+        <h2 class="post-title">
+            
+                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
+                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
+                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
+                <font color=#F4711F>置顶</font>
+                <!-- <font color=#F89E8C>置顶</font>  -->
+                <!-- <font color=#1CB7ED>置顶</font>  -->
+                                 
+            hive入门
+        </h2>
+        <h3 class="post-subtitle">
+            This is about hive
+        </h3>
+        <div class="post-content-preview">
+            hive入门
+hive安装
+解压
+1234567[bigdata@hadoop001 ~]$ cd software/[bigdata@hadoop001 software]$ lltotal 677416-rw-r--r-- 1 bigdata bigdata 434354462 Sep 15 21:05 hadoop-2.6.0-cdh5.16.2.tar.gz-rw-r--r-- 1 ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by PsycheLee on
+            2015-12-06
         </p>
         <div class="tags">
             
@@ -469,48 +560,6 @@ mapred-site.xml
 
 <div class="post-preview">
 
-    <a href="/article/hadoop(四)HDFS命令/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            hadoop(四)hdfs命令
-        </h2>
-        <h3 class="post-subtitle">
-            This is about jdk
-        </h3>
-        <div class="post-content-preview">
-            hadoop(四)hdfs命令
-SNN
-
-1.snn执行checkpoint动作时候，nn会停止使用当前的edit文件515-516，
-会暂时将读写操作记录到一个新的edit文件中 517
-2.snn将nn的fsimage 514 和 edits文件 515-516 远程下载到本地
-3.snn将fsimage 514加载到内存中，将 edits文件 515-516 内容之内存中从头到尾的执行......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by PsycheLee on
-            2015-09-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#shell" title="shell">shell</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/article/hive入门/">
         <h2 class="post-title">
             
@@ -550,7 +599,7 @@ hive安装
 
 <div class="post-preview">
 
-    <a href="/article/jdk安装/">
+    <a href="/article/hadoop(四)HDFS命令/">
         <h2 class="post-title">
             
                 <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
@@ -560,63 +609,19 @@ hive安装
                 <!-- <font color=#F89E8C>置顶</font>  -->
                 <!-- <font color=#1CB7ED>置顶</font>  -->
                                  
-            jdk的linux安装
+            hadoop(四)hdfs命令
         </h2>
         <h3 class="post-subtitle">
             This is about jdk
         </h3>
         <div class="post-content-preview">
-            jdk的linux安装
-1.上传安装包
-123[root@hadoop001 ~]# lltotal 717636-rw-r--r-- 1 root root 185646832 Nov 28 08:56 jdk-8u181-linux-x64.tar.gz
-2.创建文件夹
-1[root@hadoop001 ~]# mkdir -p /usr/java
-3.解压
-1[root@hadoop0......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by PsycheLee on
-            2015-09-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#shell" title="shell">shell</a>
-            
-        </div>
-    
+            hadoop(四)hdfs命令
+SNN
 
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/shell脚本入门/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            shell脚本入门
-        </h2>
-        <h3 class="post-subtitle">
-            This is about shell
-        </h3>
-        <div class="post-content-preview">
-            Shell脚本入门
-1. shell脚本创建
-12#! /bin/bash 【推荐】echo &quot;hello world&quot;
-2. shell脚本运行
-
-全路径直接运行
-./ 运行
-
-12345678[root@hadoop001 shell]# /root/shell/wordcount.sh  -bash: /root/shell/wordcount.sh: Permis......
+1.snn执行checkpoint动作时候，nn会停止使用当前的edit文件515-516，
+会暂时将读写操作记录到一个新的edit文件中 517
+2.snn将nn的fsimage 514 和 edits文件 515-516 远程下载到本地
+3.snn将fsimage 514加载到内存中，将 edits文件 515-516 内容之内存中从头到尾的执行......
         </div>
     </a>
     
@@ -675,15 +680,15 @@ hive安装
     <div class="tags">
         
             
-            <a href="/tags/#shell" title="shell" rel="10">shell</a>
-            
-        
-            
-            <a href="/tags/#MySQL" title="MySQL" rel="1">MySQL</a>
+            <a href="/tags/#shell" title="shell" rel="12">shell</a>
             
         
             
             <a href="/tags/#linux" title="linux" rel="1">linux</a>
+            
+        
+            
+            <a href="/tags/#MySQL" title="MySQL" rel="1">MySQL</a>
             
         
     </div>
@@ -743,19 +748,19 @@ hive安装
         </li>
       
         <li>
+          <a href="/article/hadoop(五)mapreduce入门/">mr on yarn流程/yarn架构设计</a>
+        </li>
+      
+        <li>
           <a href="/article/hadoop(六)参数调优/">hadoop参数调优</a>
         </li>
       
         <li>
+          <a href="/article/2020-12-13 hive入门 2/">hive入门</a>
+        </li>
+      
+        <li>
           <a href="/article/hive入门/">hive入门</a>
-        </li>
-      
-        <li>
-          <a href="/article/hadoop(二)yarn部署/">hadoop(二)yarn部署</a>
-        </li>
-      
-        <li>
-          <a href="/article/hadoop(一)入门/">hadoop(一)入门</a>
         </li>
       
     </ul>
@@ -778,7 +783,7 @@ hive安装
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
         <hr>
