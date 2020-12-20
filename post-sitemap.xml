@@ -7,8 +7,32 @@
     </url>
 
     <url>
-        <loc>http://psychelee.github.io/article/2020-12-13%20hive%E5%85%A5%E9%97%A8%202/</loc>
-        <lastmod>2020-12-16T15:25:26.454Z</lastmod>
+        <loc>http://psychelee.github.io/article/sqoop/</loc>
+        <lastmod>2020-12-20T05:05:59.336Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hive_3/</loc>
+        <lastmod>2020-12-19T10:49:32.954Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hive_2/</loc>
+        <lastmod>2020-12-18T14:56:46.431Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/hive%E5%85%A5%E9%97%A8/</loc>
+        <lastmod>2020-12-18T14:08:00.457Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -17,14 +41,6 @@
     <url>
         <loc>http://psychelee.github.io/article/1/</loc>
         <lastmod>2020-12-16T14:27:08.871Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://psychelee.github.io/article/hive%E5%85%A5%E9%97%A8/</loc>
-        <lastmod>2020-12-13T08:09:07.331Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
