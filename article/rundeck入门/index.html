@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -238,7 +238,7 @@
 <ul>
 <li>创建project 输入name即可</li>
 </ul>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C1.png" alt="1"></p>
+<p><img src="/img/article/1.png" alt="1"></p>
 <ul>
 <li>
 <p>准备shell脚本</p>
@@ -251,41 +251,41 @@
 <p>create a new job</p>
 </li>
 </ul>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C2.png" alt="2"></p>
+<p><img src="/img/article/2.png" alt="2"></p>
 <ul>
 <li>
 <p>填写名称</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C3.png" alt="3"></p>
+<p><img src="/img/article/3.png" alt="3"></p>
 </li>
 <li>
 <p>填写workflow</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C4.png" alt="4"></p>
+<p><img src="/img/article/4.png" alt="4"></p>
 </li>
 <li>
-<p>添加step<img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C5.png" alt="5"></p>
+<p>添加step<img src="/img/article/5.png" alt="5"></p>
 </li>
 <li>
 <p>填写路径</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C6.png" alt="6"></p>
+<p><img src="/img/article/6.png" alt="6"></p>
 </li>
 <li>
 <p>填写crontab 包含秒</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C7.png" alt="7"></p>
+<p><img src="/img/article/7.png" alt="7"></p>
 </li>
 <li>
 <p>执行job 查看结果</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C8.png" alt="8"></p>
+<p><img src="/img/article/8.png" alt="8"></p>
 </li>
 </ul>
 <h5 id="关闭">关闭</h5>
 <p>​	ps -ef | grep rundeck 找到pid</p>
 <p>​	kill -9 pid</p>
 <h3 id="邮箱设置">邮箱设置</h3>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C9.png" alt="1606641558729"></p>
+<p><img src="/img/article/9.png" alt="1606641558729"></p>
 <p>开启下面的服务</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C10.png" alt="1606641623059"></p>
+<p><img src="/img/article/10.png" alt="1606641623059"></p>
 <p>生成授权码</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C12.png" alt="1606641720991"></p>
+<p><img src="/img/article/12.png" alt="1606641720991"></p>
 <p>muciyrwfnnpcbcif</p>
 <h3 id="安装postfix服务">安装postfix服务</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# service sendmail status</span><br><span class="line">Redirecting to /bin/systemctl status  sendmail.service</span><br><span class="line">Unit sendmail.service could not be found.</span><br><span class="line">[root@hadoop001 ~]# yum install -y postfix</span><br><span class="line">[root@hadoop001 ~]# yum install -y mailx</span><br></pre></td></tr></table></figure>
@@ -302,8 +302,8 @@
 <h4 id="测试">测试</h4>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@hadoop001 ~]# echo hello world |mail -s &quot;title&quot; 549501669@qq.com</span><br><span class="line">[root@hadoop001 ~]# could not connect: Network is unreachable</span><br><span class="line">&quot;/root/dead.letter&quot; 11/299</span><br><span class="line">. . . message not sent.</span><br></pre></td></tr></table></figure>
 <p>阿里云25解封</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C13.png" alt="1606661642787"><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C14" alt="1606661712449"></p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C15" alt="1606661787950"></p>
+<p><img src="/img/article/13.png" alt="1606661642787"><img src="/img/article/14.png" alt="1606661712449"></p>
+<p><img src="/img/article/15.png" alt="1606661787950"></p>
 <p>申请解封失败, 使用京东云, 一次性成功</p>
 <ul>
 <li>
@@ -328,12 +328,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/hadoop(三)读写流程/" data-toggle="tooltip" data-placement="top" title="hadoop(三)">&larr; Previous Post</a>
+                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">Next Post &rarr;</a>
+                            <a href="/article/jdk安装/" data-toggle="tooltip" data-placement="top" title="jdk的linux安装">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -516,7 +516,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; PsycheLee 2020 
+                    Copyright &copy; PsycheLee 2021 
                     By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
                    
                 </p>

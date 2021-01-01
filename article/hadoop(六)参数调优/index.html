@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -221,14 +221,14 @@
 <h5 id="11-系统装完-消耗-1g">1.1 系统装完  消耗     （1G）</h5>
 <h5 id="12-系统要预留20内存-1g">1.2 系统要预留20%内存 （1G）</h5>
 <p>​	给当前进程服务，防止出现oom-kill机制<br>
-	Linux系统防止夯住<br>
-	给未来部署软件预留空间<br>
+​	Linux系统防止夯住<br>
+​	给未来部署软件预留空间<br>
 128*20%=25.6G==26G</p>
 <p>还剩：102G</p>
 <h5 id="13-dn-和-nm-节点">1.3 DN  和 NM 节点</h5>
 <p>存储和计算一体，数据本地化。</p>
 <p>​	DN = 2G<br>
-	NM = 4G   NM进程本身的内存</p>
+​	NM = 4G   NM进程本身的内存</p>
 <p>​	102-2-4=96G  是真正container容器总内存 ，这才是真正计算的小弟</p>
 <h5 id="14-container内存">1.4  container内存</h5>
 <p><a href="http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2/" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2/</a></p>
@@ -274,8 +274,8 @@ FIFO Scheduler是最简单也是最容易理解的调度器，也不需要任何
 <h5 id="fair调度器">Fair调度器</h5>
 <p>我们不需要预先占用一定的系统资源，Fair调度器会为所有运行的job动态的调整系统资源。如下图所示，当第一个大job提交时，只有这一个job在运行，此时它获得了所有集群资源；当第二个小任务提交后，Fair调度器会分配一半资源给这个小任务，让这两个任务公平的共享集群资源。<br>
 需要注意的是，在下图Fair调度器中，从第二个任务提交到获得资源会有一定的延迟，因为它需要等待第一个任务释放占用的Container。小任务执行完成之后也会释放自己占用的资源，大任务又获得了全部的系统资源。最终的效果就是Fair调度器即得到了高的资源利用率又能保证小任务及时完成。</p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C18.png" alt="1607699363574"></p>
-<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5C17.png" alt="1607699376697"></p>
+<p><img src="/img/article/18.png" alt="1607699363574"></p>
+<p><img src="/img/article/17.png" alt="1607699376697"></p>
 <p>生产上 更多使用 公平调度器</p>
 <p>在Fair调度器中，我们不需要预先占用一定的系统资源，<br>
 Fair调度器会为所有运行的job动态的调整系统资源。</p>
@@ -297,7 +297,7 @@ Fair调度器会为所有运行的job动态的调整系统资源。</p>
                     
                     
                         <li class="next">
-                            <a href="/article/hive_2/" data-toggle="tooltip" data-placement="top" title="hive(2)">Next Post &rarr;</a>
+                            <a href="/article/hive_3/" data-toggle="tooltip" data-placement="top" title="Hive_3">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -480,7 +480,7 @@ Fair调度器会为所有运行的job动态的调整系统资源。</p>
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; PsycheLee 2020 
+                    Copyright &copy; PsycheLee 2021 
                     By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
                    
                 </p>

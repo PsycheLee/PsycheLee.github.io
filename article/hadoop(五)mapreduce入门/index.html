@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -223,18 +223,18 @@ string=a b a<br>
 (a,1)</p>
 <h5 id="reduce-归约-汇总">reduce 归约  汇总</h5>
 <p>​    (a,2)<br>
-(b,1)</p>
+​    (b,1)</p>
 <h5 id="shuffle-洗牌">【shuffle】 洗牌</h5>
 <p>​	数据根据key进行网络传输规整到一起，按规则计算<br>
-	hadoop001   id=1 name=a  一百万条<br>
-		2      b  		十万条</p>
+​	hadoop001   id=1 name=a  一百万条<br>
+​                  		2      b  		十万条</p>
 <p>​	hadoop002   id=1 name=a  一万条<br>
-		 3      c  		十万条</p>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C5%5CWordCount.jpg" alt="WordCount"></p>
+​                 		 3      c  		十万条</p>
+<p><img src="/img/article/WordCount.jpg" alt="WordCount"></p>
 <h3 id="mr-on-yarn流程yarn架构设计">mr on yarn流程/yarn架构设计</h3>
 <h4 id="container-容器">container 容器</h4>
 <p>虚拟化概念  是一定的内存和cpu的资源组合</p>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C5%5Ccontainer.png" alt="container"></p>
+<p><img src="/img/article/container.png" alt="container"></p>
 <p>100件货</p>
 <p>1个房间1g内存 1个人 vcore： 100h<br>
 1个房间1g内存 5个人 vcore： 20h<br>
@@ -255,7 +255,7 @@ string=a b a<br>
 当task任务运行失败，也会重启container任务<br>
 8.当所有的task任务全部完成，applicationmaster主程序会向applications manager 申请注销和关闭作业，这时在web界面查看任务是  是否完成 ，是成功还是失败。</p>
 <h5 id="运行任务直到任务完成">运行任务，直到任务完成。</h5>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C5%5Cmr.png" alt="mr"></p>
+<p><img src="/img/article/mr.png" alt="mr"></p>
 <h4 id="wordcount">wordcount</h4>
 <p>split规则:<br>
 块大小<br>
@@ -280,7 +280,7 @@ string=a b a<br>
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/1/" data-toggle="tooltip" data-placement="top" title="标题">&larr; Previous Post</a>
+                            <a href="/article/sqoop/" data-toggle="tooltip" data-placement="top" title="Sqoop">&larr; Previous Post</a>
                         </li>
                     
                     
@@ -468,7 +468,7 @@ string=a b a<br>
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; PsycheLee 2020 
+                    Copyright &copy; PsycheLee 2021 
                     By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
                    
                 </p>

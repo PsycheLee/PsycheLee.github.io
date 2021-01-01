@@ -142,14 +142,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -237,7 +237,7 @@
 镜像文件 fsimage<br>
 编辑日志文件 editlogs</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 19:04 edits_0000000000000000511-0000000000000000512</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 20:04 edits_0000000000000000513-0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      42 Nov 25 21:04 edits_0000000000000000515-0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop 1048576 Nov 25 21:04 edits_inprogress_0000000000000000517</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 20:04 fsimage_0000000000000000514</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 20:04 fsimage_0000000000000000514.md5</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop    4230 Nov 25 21:04 fsimage_0000000000000000516</span><br><span class="line">-rw-rw-r-- 1 hadoop hadoop      62 Nov 25 21:04 fsimage_0000000000000000516.md5</span><br></pre></td></tr></table></figure>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5Chdfsarchitecture.png" alt="hdfsarchitecture"></p>
+<p><img src="/img/article/hdfsarchitecture.png" alt="hdfsarchitecture"></p>
 <h5 id="secondary-namenode-snn-第二名称节点">secondary namenode: snn 第二名称节点</h5>
 <ul>
 <li>
@@ -293,7 +293,7 @@ NN根据文件的大小，根据块大小 副本数，计算要上传多少的�
 <li>
 <p>当所有的块全部写完，Client调用【FSDataOutputStream】对象的close方法，</p>
 <p>关闭输出流。再次调用FileSystem.complete方法 ，告诉nn文件写成功。</p>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5CHDFS%E8%AF%BB%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
+<p><img src="/img/article/HDFS%E8%AF%BB%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
 </li>
 </ul>
 <p>伪分布式 1台dn，副本数参数必须设置是1吗？<br>
@@ -320,7 +320,7 @@ NN根据文件的大小，根据块大小 副本数，计算要上传多少的�
 <p>Client调用【FSDataIntputStream】对象的close方法，关闭输入流。</p>
 </li>
 </ul>
-<p><img src="E:%5Cbigdata%5Chadoop%5C%E5%9F%BA%E7%A1%80%5C3%5CHDFS%E5%86%99%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
+<p><img src="/img/article/HDFS%E5%86%99%E6%B5%81%E7%A8%8B.png" alt="HDFS写流程"></p>
 <h4 id="副本放置策略">副本放置策略</h4>
 <p><a href="https://www.bilibili.com/video/BV1eE411p7un" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1eE411p7un</a></p>
 <p>生产上读写操作  尽量选择DN节点操作<br>
@@ -345,7 +345,7 @@ NN根据文件的大小，根据块大小 副本数，计算要上传多少的�
                     
                     
                         <li class="next">
-                            <a href="/article/rundeck入门/" data-toggle="tooltip" data-placement="top" title="rundeck入门">Next Post &rarr;</a>
+                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -528,7 +528,7 @@ NN根据文件的大小，根据块大小 副本数，计算要上传多少的�
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; PsycheLee 2020 
+                    Copyright &copy; PsycheLee 2021 
                     By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
                    
                 </p>
