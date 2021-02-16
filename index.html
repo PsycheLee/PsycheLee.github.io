@@ -445,6 +445,102 @@ Hadoop(HDFS/Hive/HBase…) ==&gt; RDBMS
 
 <div class="post-preview">
 
+    <a href="/article/flume/">
+        <h2 class="post-title">
+            
+                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
+                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
+                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
+                <font color=#F4711F>置顶</font>
+                <!-- <font color=#F89E8C>置顶</font>  -->
+                <!-- <font color=#1CB7ED>置顶</font>  -->
+                                 
+            Flume入门
+        </h2>
+        <h3 class="post-subtitle">
+            This is about flume
+        </h3>
+        <div class="post-content-preview">
+            Flume入门
+介绍
+背景
+	hdfs dfs -put …  hdfs_path
+	crontab 定时去put
+	时效性
+	完整性
+	监控
+	压缩
+	安全性
+	…
+Flume
+	针对日志数据进行收集的一个框架    A ==&gt; B
+	Flume使用时就是编写配置文件
+	有时需求直接使用Flume的build-in，是满足不了了
+	二次开发  TODO…
+官网:	Flume User......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by PsycheLee on
+            2015-09-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#shell" title="shell">shell</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/hadoopHA部署/">
+        <h2 class="post-title">
+            
+                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
+                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
+                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
+                <font color=#F4711F>置顶</font>
+                <!-- <font color=#F89E8C>置顶</font>  -->
+                <!-- <font color=#1CB7ED>置顶</font>  -->
+                                 
+            hadoopHA部署
+        </h2>
+        <h3 class="post-subtitle">
+            This is about hadoop HA
+        </h3>
+        <div class="post-content-preview">
+            hadoopHA部署
+1.阿里云三台机器  按量付费
+1.1window的hosts文件
+C:\Windows\System32\drivers\etc\HOSTS
+外网ip 机器名称
+停机不收费 ，其实只是收费极低
+1.2 运行hostname lxl001命令修改主机名
+linux的hosts文件 /etc/hosts,三个机器名都需要追加到三台机器的hosts文件
+追加 内网IP 机器......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by PsycheLee on
+            2017-09-08
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#shell" title="shell">shell</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/rundeck入门/">
         <h2 class="post-title">
             
@@ -495,7 +591,7 @@ jdk1.8
 
 <div class="post-preview">
 
-    <a href="/article/hadoop(一)入门/">
+    <a href="/article/1_template/">
         <h2 class="post-title">
             
                 <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
@@ -505,60 +601,20 @@ jdk1.8
                 <!-- <font color=#F89E8C>置顶</font>  -->
                 <!-- <font color=#1CB7ED>置顶</font>  -->
                                  
-            hadoop(一)入门
+            jdk的linux安装
         </h2>
         <h3 class="post-subtitle">
             This is about jdk
         </h3>
         <div class="post-content-preview">
-            hadoop(一)入门
-创建用户和文件夹
-123456[root@hadoop001 ~]# useradd bigdata[root@hadoop001 ~]# id bigdatauid=1000(bigdata) gid=1000(bigdata) groups=1000(bigdata)[root@hadoop001 ~]# su - bigdata[bigdata@hadoop00......
+            Title
+...
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by PsycheLee on
-            2015-10-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#shell" title="shell">shell</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/hadoop(二)yarn部署/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            hadoop(二)yarn部署
-        </h2>
-        <h3 class="post-subtitle">
-            This is about jdk
-        </h3>
-        <div class="post-content-preview">
-            hadoop(二)yarn部署
-配置修改
-mapred-site.xml
-12345678910[bigdata@hadoop001 hadoop]$ pwd/home/bigdata/app/hadoop/etc/hadoop[bigdata@hadoop001 hadoop]$ cp mapred-site.xml.template mapred-site.xml[bigdata@had......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by PsycheLee on
-            2015-11-08
+            2015-09-08
         </p>
         <div class="tags">
             
@@ -618,48 +674,6 @@ namenode ：nn 名称节点
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/hadoop(四)HDFS命令/">
-        <h2 class="post-title">
-            
-                <i class="fa fa-thumb-tack" style="color:#F4711F" ></i>
-                <!-- <i class="fa fa-thumb-tack" style="color:#F89E8C" ></i> -->
-                <!-- <i class="fa fa-thumb-tack" style="color:#1CB7ED" ></i> -->
-                <font color=#F4711F>置顶</font>
-                <!-- <font color=#F89E8C>置顶</font>  -->
-                <!-- <font color=#1CB7ED>置顶</font>  -->
-                                 
-            hadoop(四)hdfs命令
-        </h2>
-        <h3 class="post-subtitle">
-            This is about jdk
-        </h3>
-        <div class="post-content-preview">
-            hadoop(四)hdfs命令
-SNN
-
-1.snn执行checkpoint动作时候，nn会停止使用当前的edit文件515-516，
-会暂时将读写操作记录到一个新的edit文件中 517
-2.snn将nn的fsimage 514 和 edits文件 515-516 远程下载到本地
-3.snn将fsimage 514加载到内存中，将 edits文件 515-516 内容之内存中从头到尾的执行......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by PsycheLee on
-            2015-09-08
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#shell" title="shell">shell</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -701,15 +715,15 @@ SNN
     <div class="tags">
         
             
+            <a href="/tags/#shell" title="shell" rel="16">shell</a>
+            
+        
+            
             <a href="/tags/#linux" title="linux" rel="1">linux</a>
             
         
             
             <a href="/tags/#MySQL" title="MySQL" rel="1">MySQL</a>
-            
-        
-            
-            <a href="/tags/#shell" title="shell" rel="13">shell</a>
             
         
     </div>
@@ -804,7 +818,7 @@ SNN
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
         <hr>

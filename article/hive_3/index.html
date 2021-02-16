@@ -373,7 +373,7 @@ param1=value1&amp;param2=value2: param</p>
 </li>
 <li>
 <p>根据合并的字段分组，并且将姓名合在一起</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive (test)&gt; select dept_sex,concat_ws(&apos;|&apos;,collect_set(t.name)) from 			  &gt;(select name,concat_ws(&apos;,&apos;,dept,sex)dept_sex from  emp_info)t  			&gt;group by dept_sex ;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hive (test)&gt; select dept_sex,concat_ws(&apos;|&apos;,collect_set(t.name)) from 			  </span><br><span class="line">			&gt;(select name,concat_ws(&apos;,&apos;,dept,sex)dept_sex from  emp_info)t  			</span><br><span class="line">			&gt;group by dept_sex ;</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h4 id="列转行explodesplitcolumn_name">列转行explode(split(column_name,’,’))</h4>
@@ -387,8 +387,8 @@ param1=value1&amp;param2=value2: param</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">hive (test)&gt; select </span><br><span class="line">           &gt; name, course</span><br><span class="line">           &gt; from</span><br><span class="line">           &gt; column2row</span><br><span class="line">           &gt; lateral view explode(split(courses,&apos;,&apos;)) course_tmp as course;</span><br><span class="line">OK</span><br><span class="line">name    course</span><br><span class="line">JIM     MapReduce</span><br><span class="line">JIM     Hive</span><br><span class="line">JIM     Spark</span><br><span class="line">JIM     Flink</span><br><span class="line">PETTER  Hadoop</span><br><span class="line">PETTER  HBase</span><br><span class="line">PETTER  Kafka</span><br><span class="line">Time taken: 0.07 seconds, Fetched: 7 row(s)</span><br></pre></td></tr></table></figure>
 <h4 id="udf">UDF</h4>
 <p>​	UDF: 一进一出  upper  lower(ename)<br>
-	UDAF: 多进一出   sum  avg<br>
-	UDTF：一进多出</p>
+​	UDAF: 多进一出   sum  avg<br>
+​	UDTF：一进多出</p>
 <p>需求：用Hive完成wc统计</p>
 <ul>
 <li>准备数据</li>

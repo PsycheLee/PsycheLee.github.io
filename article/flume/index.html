@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Flume入门 - lixuelian | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://psychelee.github.io/article/flume/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                            
+                        </div>
+                        <h1>Flume入门</h1>
+                        <h2 class="subheading">This is about flume</h2>
+                        <span class="meta">
+                            Posted by PsycheLee on
+                            2015-09-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Psyche&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="flume入门">Flume入门</h2>
+<h3 id="介绍">介绍</h3>
+<p>背景<br>
+	hdfs dfs -put …  hdfs_path<br>
+	crontab 定时去put<br>
+	时效性<br>
+	完整性<br>
+	监控<br>
+	压缩<br>
+	安全性<br>
+	…</p>
+<p>Flume<br>
+	针对日志数据进行收集的一个框架    A ==&gt; B<br>
+	Flume使用时就是编写配置文件<br>
+	有时需求直接使用Flume的build-in，是满足不了了<br>
+	二次开发  TODO…</p>
+<p>官网:	Flume User Guide 日常使用<br>
+				Flume Developer Guide  二次开发文档</p>
+<pre><code>架构一:
+access.log  ==&gt; Flume  ==&gt; HDFS  ==&gt; 离线处理
+access.log  ==&gt; Flume  ==&gt; Kafka ==&gt; 实时处理
+
+架构二:
+                                 ==&gt; HDFS
+access.log  ==&gt; Flume ==&gt; Kafka 
+                                 ==&gt; 流处理
+
+ELK
+	ES
+	Logstash
+	Kibana
+	Beats
+
+
+ng: 
+og: 0.9
+	https://github.com/cloudera/
+	https://github.com/cloudera/flume-ng
+	github.com/apache/flume
+	
+	mvn clean package -DskipTests 编译命令
+</code></pre>
+<h3 id="flume三个核心组件">Flume三个核心组件</h3>
+<p><img src="/img/article%5Cflume%E4%B8%89%E4%B8%AA%E7%BB%84%E4%BB%B6.png" alt="flume三个组件"></p>
+<h4 id="source-对接数据源-a">Source ： 对接数据源    A</h4>
+<pre><code>	avro                **** 序列化框架
+	exec				监听文件
+	Spooling Directory 监听文件夹
+	Taildir Source      ***** 断点续传
+	kafka
+	netcat 				监听端口
+	http
+	Custom 
+</code></pre>
+<h4 id="channel-聚集-解耦">Channel： 聚集          解耦</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Source和Sink之间的一个缓冲区</span><br><span class="line">memory</span><br><span class="line">file</span><br><span class="line">kafka</span><br><span class="line">jdbc</span><br></pre></td></tr></table></figure>
+<h4 id="sink-对接目的地-b">Sink   ： 对接目的地    B</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hdfs</span><br><span class="line">logger  测试</span><br><span class="line">avro                </span><br><span class="line">kafka               * </span><br><span class="line">Custom</span><br></pre></td></tr></table></figure>
+<h3 id="配置文件">配置文件</h3>
+<p>阅读官网使用说明即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># example.conf: A single-node Flume configuration</span><br><span class="line"></span><br><span class="line">a1: Agent的名字</span><br><span class="line"></span><br><span class="line">需求：监听localhost机器的44444端口，接收到数据sink到终端</span><br><span class="line"></span><br><span class="line"># Name the components on this agent   配置各种名字</span><br><span class="line">a1.sources = r1  配置source的名字</span><br><span class="line">a1.sinks = k1    配置sink的名字</span><br><span class="line">a1.channels = c1  配置channel的名字</span><br><span class="line"></span><br><span class="line"># Describe/configure the source       配置source的基本属性</span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = 44444</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory  配置channel的基本属性</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line"># Describe the sink                  配置sink的基本属性</span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel      连线</span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<h3 id="安装部署">安装部署</h3>
+<h4 id="上传targz包-解压-配置环境变量">上传tar.gz包 解压 配置环境变量</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 software]$ tar -xzvf flume-ng-1.6.0-cdh5.16.2.tar.gz -C ~/app/</span><br><span class="line"></span><br><span class="line">[bigdata@hadoop001 app]$ ln -s apache-flume-1.6.0-cdh5.16.2-bin/ flume</span><br><span class="line"></span><br><span class="line">[root@hadoop001 ~]# vi /etc/profile</span><br><span class="line">export FLUME_HOME=/home/bigdata/app/flume</span><br><span class="line">export PATH=$&#123;FLUME_HOME&#125;/bin:$PATH</span><br></pre></td></tr></table></figure>
+<h4 id="目录结构">目录结构</h4>
+<p>$FLUME_HOME/bin/  常用命令 如: flume-ng<br>
+$FLUME_HOME/lib  依赖的jar包  后续二次开发，打的jar包，就传到这个目录下即可</p>
+<p>$FLUME_HOME/conf 配置文件, 根据模板 copy一份修改</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 conf]$ cp flume-env.sh.template flume-env.sh</span><br><span class="line">[bigdata@hadoop001 conf]$ vi flume-env.sh</span><br><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_181</span><br></pre></td></tr></table></figure>
+<h3 id="简单使用">简单使用</h3>
+<h4 id="配置文件">配置文件</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 flume]$ mkdir config</span><br><span class="line"></span><br><span class="line">[bigdata@hadoop001 config]$ vi example.conf</span><br><span class="line">a1.sources = r1  </span><br><span class="line">a1.sinks = k1    </span><br><span class="line">a1.channels = c1  </span><br><span class="line"></span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = 44444</span><br><span class="line"></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<h4 id="运行命令">运行命令</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \  </span><br><span class="line">--name a1 \   </span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/example.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<p>a1==&gt;agent的名字</p>
+<p>conf==&gt;flume的conf文件夹</p>
+<p>conf-file==&gt;自己写的配置文件</p>
+<p>-D设置java环境变量的一些K,V</p>
+<p>【报错】</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 config]$ telnet localhost 44444    </span><br><span class="line">Trying 127.0.0.1...</span><br><span class="line">telnet: connect to address 127.0.0.1: Connection refused</span><br></pre></td></tr></table></figure>
+<p>检查nc命令是否可用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 config]$  nc -kl 127.0.0.1 444444</span><br><span class="line">-bash: nc: command not found</span><br></pre></td></tr></table></figure>
+<p>不可用，下载nc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# yum install nc -y</span><br></pre></td></tr></table></figure>
+<p>重新运行flume-ng命令,telnet端口,输入一些值,查看flume终端的变化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 config]$ telnet localhost 44444    </span><br><span class="line">Trying 127.0.0.1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is &apos;^]&apos;.</span><br><span class="line">1</span><br><span class="line">OK</span><br><span class="line">2</span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">2021-02-15 15:49:53,641 (lifecycleSupervisor-1-0) [INFO - org.apache.flume.source.NetcatSource.start(NetcatSource.java:166)] Created serverSocket:sun.nio.ch.ServerSocketChannelImpl[/127.0.0.1:44444]</span><br><span class="line">2021-02-15 15:50:02,639 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;&#125; body: 31 0D                                           1. &#125;</span><br><span class="line">2021-02-15 15:50:03,135 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;&#125; body: 32 0D                                           2. &#125;</span><br></pre></td></tr></table></figure>
+<p>telnet输入的字符: 长度只显示16个, 数据未丢</p>
+<p>数据传输 单元 Event</p>
+<p>{ headers:{} body: 32 0D   2. }  一条数据</p>
+<h3 id="使用1-exec-hdfs">使用1: exec   hdfs</h3>
+<p>exec ==&gt; memory ==&gt;  hdfs</p>
+<p>监听文件的变化</p>
+<p>**注意: 文件路径最好使用全路径…**坑</p>
+<p>flume-ng agent <br>
+–name exec-hdfs-agent <br>
+–conf $FLUME_HOME/conf <br>
+–conf-file $FLUME_HOME/config/flume-exec-hdfs.conf <br>
+-Dflume.root.logger=INFO,console</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">exec-hdfs-agent.sources = exec-source</span><br><span class="line">exec-hdfs-agent.channels = exec-memory-channel</span><br><span class="line">exec-hdfs-agent.sinks = hdfs-sink</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">exec-hdfs-agent.sources.exec-source.type = exec</span><br><span class="line">exec-hdfs-agent.sources.exec-source.command = tail -F ~/data/data.log</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">exec-hdfs-agent.channels.exec-memory-channel.type = memory</span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.type = hdfs</span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.path = hdfs://hadoop001:9000/data2/tail</span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.fileType = DataStream</span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.writeFormat = Text</span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.batchSize = 10</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">exec-hdfs-agent.sources.exec-source.channels = exec-memory-channel </span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.channel = exec-memory-channel</span><br></pre></td></tr></table></figure>
+<p>小文件问题: 增加几个参数, 但时效性会变弱</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.rollInterval = 50</span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.rollSize = 1000000</span><br><span class="line">exec-hdfs-agent.sinks.hdfs-sink.hdfs.rollCount = 0</span><br></pre></td></tr></table></figure>
+<h3 id="使用2-spooling-directory">使用2: Spooling Directory</h3>
+<p>Spooling Directory  source<br>
+	memory channel<br>
+	logger sink</p>
+<p>监听文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = r1</span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line"># Describe/configure the source</span><br><span class="line">a1.sources.r1.type = spooldir</span><br><span class="line">a1.sources.r1.spoolDir  = /home/bigdata/data/spool</span><br><span class="line">a1.sources.r1.fileHeader = true</span><br><span class="line">a1.sources.r1.fileHeaderKey = lxl_header_key</span><br><span class="line"></span><br><span class="line"># Describe the sink</span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel</span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<p>启动</p>
+<p>flume-ng agent <br>
+–name a1 <br>
+–conf $FLUME_HOME/conf <br>
+–conf-file $FLUME_HOME/config/spooling-memory-logger.conf <br>
+-Dflume.root.logger=INFO,console</p>
+<p>copy一些文件到目标文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 data]$ cp emp.txt ~/data/spool</span><br></pre></td></tr></table></figure>
+<p>文件名不能重复, 否则会挂掉</p>
+<h3 id="使用3-spooling-hdfs">使用3: Spooling HDFS</h3>
+<p>timestamp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name spooling-hdfs-agent \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/flume-spooling-timestamp.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">spooling-hdfs-agent.sources = spooling-source</span><br><span class="line">spooling-hdfs-agent.channels = spooling-memory-channel</span><br><span class="line">spooling-hdfs-agent.sinks = hdfs-sink</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">spooling-hdfs-agent.sources.spooling-source.type = spooling</span><br><span class="line">spooling-hdfs-agent.sources.spooling-source.spoolDir = /home/bigdata/data/logs</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">spooling-hdfs-agent.channels.spooling-memory-channel.type = memory</span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.type = hdfs</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.path = hdfs://hadoop001:9000/data2/logs/%Y%m%d%H%M</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.fileType = CompressedStream </span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.codeC = org.apache.hadoop.io.compress.GzipCodec</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.filePrefix = page-views</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.rollInterval = 30</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.rollSize = 0</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.rollCount = 1000000</span><br><span class="line"></span><br><span class="line">#important four lines configuration</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.useLocalTimeStamp = true</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.round = true</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.roundUnit = minute</span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.hdfs.roundValue = 1</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">spooling-hdfs-agent.sources.spooling-source.channels = spooling-memory-channel </span><br><span class="line">spooling-hdfs-agent.sinks.hdfs-sink.channel = spooling-memory-channel</span><br></pre></td></tr></table></figure>
+<h3 id="使用4-taildir-断点续传">使用4: tailDir 断点续传</h3>
+<p>准备需要的目录 mkdir data/flume  position</p>
+<p>​							mkdir data/flume/test1  data/flume/test2</p>
+<p>​							cd test1 ==&gt;vi example.log</p>
+<p>flume-ng agent <br>
+–name a1 <br>
+–conf $FLUME_HOME/conf <br>
+–conf-file $FLUME_HOME/config/taildir-memory-logger.conf <br>
+-Dflume.root.logger=INFO,console</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = r1</span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line">a1.sources.r1.type = TAILDIR</span><br><span class="line">a1.sources.r1.positionFile = /home/bigdata/data/position/taildir_position.json</span><br><span class="line">a1.sources.r1.filegroups = f1 f2</span><br><span class="line">a1.sources.r1.filegroups.f1 = /home/bigdata/data/flume/test1/example.log</span><br><span class="line">a1.sources.r1.headers.f1.headerKey1 = value1</span><br><span class="line"></span><br><span class="line">a1.sources.r1.filegroups.f2 = /home/bigdata/data/flume/test2/.*log.*</span><br><span class="line">a1.sources.r1.headers.f2.headerKey1 = value2</span><br><span class="line">a1.sources.r1.headers.f2.headerKey2 = value2-2</span><br><span class="line">a1.sources.r1.fileHeader = true</span><br><span class="line"></span><br><span class="line"># Describe the sink</span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel</span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<ol>
+<li>
+<p>example.log追加数据</p>
+<p>控制台显示:</p>
+</li>
+</ol>
+<p>Event: { headers:{headerKey1=value1, file=/home/bigdata/data/flume/test1/example.log} body: 31                                              1 }</p>
+<p>查看position文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 data]$ tail -200f position/taildir_position.json  </span><br><span class="line">[&#123;&quot;inode&quot;:1583696,&quot;pos&quot;:2,&quot;file&quot;:&quot;/home/bigdata/data/flume/test1/example.log&quot;&#125;]tail: position/taildir_position.json: file truncated</span><br><span class="line">[&#123;&quot;inode&quot;:1583696,&quot;pos&quot;:2,&quot;file&quot;:&quot;/home/bigdata/data/flume/test1/example.log&quot;&#125;]tail: position/taildir_position.json: file truncated</span><br></pre></td></tr></table></figure>
+<p>测试断点续传</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 ~]$ jps -m</span><br><span class="line">31410 NameNode</span><br><span class="line">31843 Jps -m</span><br><span class="line">31717 Application --name a1 --conf-file /home/bigdata/app/flume/config/taildir-memory-logger.conf</span><br><span class="line">31543 DataNode</span><br><span class="line">31708 SecondaryNameNode</span><br><span class="line"></span><br><span class="line">[bigdata@hadoop001 ~]$ kill -9 31717</span><br></pre></td></tr></table></figure>
+<p>再继续向文件和文件夹中写数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 test2]$ cp ~/data/login.txt 1.log</span><br><span class="line">[bigdata@hadoop001 test2]$ cp ~/data/login.txt 2.log</span><br><span class="line">[bigdata@hadoop001 test2]$ cd ../test1</span><br><span class="line">[bigdata@hadoop001 test1]$ echo 3 &gt;&gt; example.log  </span><br><span class="line">[bigdata@hadoop001 test1]$ echo 4 &gt;&gt; example.log</span><br></pre></td></tr></table></figure>
+<p>重启, 数据不丢</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">OURCE, name: r1 started</span><br><span class="line">2021-02-15 19:22:22,544 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;headerKey1=value1, file=/home/bigdata/data/flume/test1/example.log&#125; body: 33                                              3 &#125;</span><br><span class="line">2021-02-15 19:22:22,544 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;headerKey1=value1, file=/home/bigdata/data/flume/test1/example.log&#125; body: 34                                              4 &#125;</span><br><span class="line">2021-02-15 19:22:22,545 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;headerKey1=value2, headerKey2=value2-2, file=/home/bigdata/data/flume/test2/2.log&#125; body: 70 6B 2C 32 30 32 31 30 38 30 31                pk,20210801 &#125;</span><br><span class="line">2021-02-15 19:22:22,545 (SinkRunner-PollingRunner-DefaultSinkProcessor) [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;headerKey1=value2, headerKey2=value2-2, file=/home/bigdata/data/flume/test2/2.log&#125; body: 70 6B 2C 32 30 32 31 30 38 30 32                pk,20210802 &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用5-avroclient">使用5: avroclient</h3>
+<p>RPC： Remote Procedure Call 远程过程调用<br>
+客户端 / 服务端</p>
+<p>序列化：将某个数据结构变成二进制<br>
+JDK： ObjectOutputStream<br>
+Hadoop： Writable<br>
+avro thrift</p>
+<ol>
+<li>启动</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name avroclient-agent \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/flume-avroclient.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>
+<p>另一个窗口 使用avro-client的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng avro-client \</span><br><span class="line">--host localhost \</span><br><span class="line">--port 44444 \</span><br><span class="line">--filename /home/bigdata/data/login.txt  \</span><br><span class="line">--conf $FLUME_HOME/conf</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看数据是否传输</p>
+<p>问题: NettyServer CLOSED ==&gt; 只能使用一次</p>
+</li>
+</ol>
+<h3 id="使用6-multi-agent-flow">使用6: multi-agent flow</h3>
+<p><img src="/img/article/avro.png" alt="avro"></p>
+<ol>
+<li>
+<p>avro-sink</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">avro-sink-agent.sources = exec-source</span><br><span class="line">avro-sink-agent.channels = avro-memory-channel</span><br><span class="line">avro-sink-agent.sinks = avro-sink</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">avro-sink-agent.sources.exec-source.type = exec</span><br><span class="line">avro-sink-agent.sources.exec-source.command = tail -F /home/bigdata/data/avro_access.data</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">avro-sink-agent.channels.avro-memory-channel.type = memory </span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">avro-sink-agent.sinks.avro-sink.type = avro</span><br><span class="line">avro-sink-agent.sinks.avro-sink.hostname = 0.0.0.0</span><br><span class="line">avro-sink-agent.sinks.avro-sink.port = 55555</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">avro-sink-agent.sources.exec-source.channels = avro-memory-channel</span><br><span class="line">avro-sink-agent.sinks.avro-sink.channel = avro-memory-channel</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>avro-source</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">avro-source-agent.sources = avro-source</span><br><span class="line">avro-source-agent.channels = avro-memory-channel</span><br><span class="line">avro-source-agent.sinks = logger-sink</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">avro-source-agent.sources.avro-source.type = avro</span><br><span class="line">avro-source-agent.sources.avro-source.bind = 0.0.0.0</span><br><span class="line">avro-source-agent.sources.avro-source.port = 55555</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">avro-source-agent.channels.avro-memory-channel.type = memory</span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">avro-source-agent.sinks.logger-sink.type = logger</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">avro-source-agent.sources.avro-source.channels = avro-memory-channel  </span><br><span class="line">avro-source-agent.sinks.logger-sink.channel = avro-memory-channel</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>先启动下游(avro-source-agent)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name avro-source-agent \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/flume-avro-source.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再启动下游</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name avro-sink-agent \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/flume-avro-sink.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>数据生成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 data]$ for i in &#123;1..100&#125;;do echo &quot;lxl $i&quot; &gt;&gt; /home/bigdata/data/avro_access.data;sleep 0.1;done</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>查看source端的控制台, 数据传输成功</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;&#125; body: 6C 78 6C 20 39 39                               lxl 99 &#125;</span><br><span class="line">[INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;&#125; body: 6C 78 6C 20 31 30 30                            lxl 100 &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="channel-selector">channel selector</h3>
+<h4 id="replicating-channel-selector">replicating channel selector</h4>
+<p>netcat   ==&gt;memory(c1) ==&gt;hdfs(sink1)</p>
+<p>​			 ==&gt;memory(c2) ==&gt;logger(sink2)</p>
+<p>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = r1</span><br><span class="line">a1.sinks = k1 k2</span><br><span class="line">a1.channels = c1 c2</span><br><span class="line"></span><br><span class="line">#  Describe the source</span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = 44444</span><br><span class="line"></span><br><span class="line"># Describe the selecotr</span><br><span class="line">a1.sources.r1.selector.type = replicating</span><br><span class="line">a1.sources.r1.channels = c1 c2 </span><br><span class="line"></span><br><span class="line"># Describe the sink</span><br><span class="line">a1.sinks.k1.type = hdfs</span><br><span class="line">a1.sinks.k1.hdfs.path = hdfs://hadoop001:9000/data2/tail2/replicating/%Y%m%d%H%M</span><br><span class="line">a1.sinks.k1.hdfs.fileType = DataStream</span><br><span class="line">a1.sinks.k1.hdfs.filePrefix = hdfsFlume</span><br><span class="line">a1.sinks.k1.hdfs.writeFormat = Text</span><br><span class="line">a1.sinks.k1.hdfs.useLocalTimeStamp = true</span><br><span class="line">a1.sinks.k1.hdfs.round = true</span><br><span class="line">a1.sinks.k1.hdfs.roundUnit = minute</span><br><span class="line">a1.sinks.k1.hdfs.roundValue = 1</span><br><span class="line"></span><br><span class="line">a1.sinks.k2.type = logger</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c2.type = memory</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel</span><br><span class="line">a1.sources.r1.channels = c1 c2</span><br><span class="line">a1.sinks.k1.channel = c1</span><br><span class="line">a1.sinks.k2.channel = c2</span><br></pre></td></tr></table></figure>
+<p>运行</p>
+<p>flume-ng agent <br>
+–name a1 <br>
+–conf $FLUME_HOME/conf <br>
+–conf-file $FLUME_HOME/config/channel-replication-selector.conf <br>
+-Dflume.root.logger=INFO,console</p>
+<h3 id="multiplexing-channel-selector">Multiplexing Channel Selector</h3>
+<p>需求图</p>
+<p><img src="/img/article/interceptor&amp;selector.png" alt="interceptor&amp;amp;selector"></p>
+<p>配置文件</p>
+<p>multi_selector1.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = r1</span><br><span class="line">a1.sinks = k1 </span><br><span class="line">a1.channels = c1 </span><br><span class="line"></span><br><span class="line">#  Describe the source</span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = 44441</span><br><span class="line"></span><br><span class="line"># Describe the interceptor</span><br><span class="line">a1.sources.r1.interceptors = i1</span><br><span class="line">a1.sources.r1.interceptors.i1.type = static</span><br><span class="line">a1.sources.r1.interceptors.i1.key = state</span><br><span class="line">a1.sources.r1.interceptors.i1.value = US</span><br><span class="line"></span><br><span class="line"># Describe the sink</span><br><span class="line">a1.sinks.k1.type = avro</span><br><span class="line">a1.sinks.k1.hostname = 0.0.0.0</span><br><span class="line">a1.sinks.k1.port = 55555</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel</span><br><span class="line">a1.sources.r1.channels = c1 </span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<p>multi_selector2.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">a2.sources = r1</span><br><span class="line">a2.sinks = k1 </span><br><span class="line">a2.channels = c1 </span><br><span class="line"></span><br><span class="line">#  Describe the source</span><br><span class="line">a2.sources.r1.type = netcat</span><br><span class="line">a2.sources.r1.bind = localhost</span><br><span class="line">a2.sources.r1.port = 44442</span><br><span class="line"></span><br><span class="line"># Describe the interceptor</span><br><span class="line">a2.sources.r1.interceptors = i1</span><br><span class="line">a2.sources.r1.interceptors.i1.type = static</span><br><span class="line">a2.sources.r1.interceptors.i1.key = state</span><br><span class="line">a2.sources.r1.interceptors.i1.value = CN</span><br><span class="line"></span><br><span class="line"># Describe the sink</span><br><span class="line">a2.sinks.k1.type = avro</span><br><span class="line">a2.sinks.k1.hostname = 0.0.0.0</span><br><span class="line">a2.sinks.k1.port = 55555</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a2.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel</span><br><span class="line">a2.sources.r1.channels = c1 </span><br><span class="line">a2.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<p>multi_selector3.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">a3.sources = r1</span><br><span class="line">a3.sinks = k1 </span><br><span class="line">a3.channels = c1 </span><br><span class="line"></span><br><span class="line">#  Describe the source</span><br><span class="line">a3.sources.r1.type = netcat</span><br><span class="line">a3.sources.r1.bind = localhost</span><br><span class="line">a3.sources.r1.port = 44443</span><br><span class="line"></span><br><span class="line"># Describe the interceptor</span><br><span class="line">a3.sources.r1.interceptors = i1</span><br><span class="line">a3.sources.r1.interceptors.i1.type = static</span><br><span class="line">a3.sources.r1.interceptors.i1.key = state</span><br><span class="line">a3.sources.r1.interceptors.i1.value = RS</span><br><span class="line"></span><br><span class="line"># Describe the sink</span><br><span class="line">a3.sinks.k1.type = avro</span><br><span class="line">a3.sinks.k1.hostname = 0.0.0.0</span><br><span class="line">a3.sinks.k1.port = 55555</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a3.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line"># Bind the source and sink to the channel</span><br><span class="line">a3.sources.r1.channels = c1 </span><br><span class="line">a3.sinks.k1.channel = c3</span><br></pre></td></tr></table></figure>
+<p>multi_selector_collector.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">collector.sources = r1</span><br><span class="line">collector.channels = c1 c2 c3</span><br><span class="line">collector.sinks = k1 k2 k3</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">collector.sources.r1.type = avro</span><br><span class="line">collector.sources.r1.bind = 0.0.0.0</span><br><span class="line">collector.sources.r1.port = 55555</span><br><span class="line"></span><br><span class="line">#define selector</span><br><span class="line">collector.sources.r1.selector.type = multiplexing</span><br><span class="line">collector.sources.r1.selector.header = state</span><br><span class="line">collector.sources.r1.selector.mapping.US = c1</span><br><span class="line">collector.sources.r1.selector.mapping.CN = c2</span><br><span class="line">collector.sources.r1.selector.default = c3</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">collector.channels.c1.type = memory</span><br><span class="line">collector.channels.c2.type = memory</span><br><span class="line">collector.channels.c3.type = memory</span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">collector.sinks.k1.type = file_roll</span><br><span class="line">collector.sinks.k1.sink.directory = /home/bigdata/tmp/multiplexing/k1</span><br><span class="line"></span><br><span class="line">collector.sinks.k2.type = file_roll</span><br><span class="line">collector.sinks.k2.sink.directory = /home/bigdata/tmp/multiplexing/k2</span><br><span class="line"></span><br><span class="line">collector.sinks.k3.type = logger</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">collector.sources.r1.channels = c1 c2 c3 </span><br><span class="line">collector.sinks.k1.channel = c1</span><br><span class="line">collector.sinks.k2.channel = c2</span><br><span class="line">collector.sinks.k3.channel = c3</span><br></pre></td></tr></table></figure>
+<p>启动顺序</p>
+<p>1 启动下游</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name collector \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/multi_selector_collector.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>启动上游</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name a1 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/multi_selector1.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name a2 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/multi_selector2.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name a3 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/multi_selector3.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>再启动3个窗口 telnet 配置中的三个端口</li>
+<li>写入数据, 查看k1和k2和控制台是否有数据</li>
+</ol>
+<h3 id="sink-processor">sink Processor</h3>
+<p>需求图</p>
+<p><img src="/img/article/sinkprocessor.png" alt="sinkprocessor"></p>
+<p>配置文件</p>
+<p>failoversink.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"># define agent: a1</span><br><span class="line">a1.sources = r1</span><br><span class="line">a1.channels = c1</span><br><span class="line">a1.sinks = k1 k2</span><br><span class="line"></span><br><span class="line"># define source</span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = 0.0.0.0</span><br><span class="line">a1.sources.r1.port = 44444</span><br><span class="line"></span><br><span class="line"># define sink </span><br><span class="line">a1.sinks.k1.type = avro</span><br><span class="line">a1.sinks.k1.hostname = 0.0.0.0</span><br><span class="line">a1.sinks.k1.port = 55551</span><br><span class="line"></span><br><span class="line">a1.sinks.k2.type = avro</span><br><span class="line">a1.sinks.k2.hostname = 0.0.0.0</span><br><span class="line">a1.sinks.k2.port = 55552</span><br><span class="line"></span><br><span class="line"># define the sink group</span><br><span class="line">a1.sinkgroups = g1</span><br><span class="line">a1.sinkgroups.g1.sinks = k1 k2</span><br><span class="line">a1.sinkgroups.g1.processor.type = failover</span><br><span class="line">a1.sinkgroups.g1.processor.priority.k1 = 5</span><br><span class="line">a1.sinkgroups.g1.processor.priority.k2 = 10</span><br><span class="line">a1.sinkgroups.g1.processor.maxpenalty = 10000</span><br><span class="line"></span><br><span class="line">#define channel</span><br><span class="line">a1.channels.c1.type = memory </span><br><span class="line"></span><br><span class="line"># build </span><br><span class="line">a1.sources.r1.channels = c1  </span><br><span class="line">a1.sinks.k1.channel = c1</span><br><span class="line">a1.sinks.k2.channel = c1</span><br></pre></td></tr></table></figure>
+<p>failovercollector-1.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">collector1.sources = r1</span><br><span class="line">collector1.channels = c1</span><br><span class="line">collector1.sinks = k1</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">collector1.sources.r1.type = avro</span><br><span class="line">collector1.sources.r1.bind = 0.0.0.0</span><br><span class="line">collector1.sources.r1.port = 55551</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">collector1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">collector1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">collector1.sources.r1.channels = c1  </span><br><span class="line">collector1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<p>failovercollector-2.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#define agent</span><br><span class="line">collector2.sources = r1</span><br><span class="line">collector2.channels = c1</span><br><span class="line">collector2.sinks = k1</span><br><span class="line"></span><br><span class="line">#define source</span><br><span class="line">collector2.sources.r1.type = avro</span><br><span class="line">collector2.sources.r1.bind = 0.0.0.0</span><br><span class="line">collector2.sources.r1.port = 55552</span><br><span class="line"></span><br><span class="line">#define channel </span><br><span class="line">collector2.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line">#define sink </span><br><span class="line">collector2.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line">#bind source and sink to channel</span><br><span class="line">collector2.sources.r1.channels = c1  </span><br><span class="line">collector2.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<p>启动顺序</p>
+<ol>
+<li>
+<p>先启动下游 collector</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name collector1 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/failovercollector-1.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name collector2 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/failovercollector-2.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>再启动上游 sink</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name a1 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/failoversink.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<p>Telnet 44444 输入数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 config]$ telnet localhost 44444</span><br><span class="line">Trying 127.0.0.1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is &apos;^]&apos;.</span><br><span class="line">A</span><br><span class="line">OK</span><br><span class="line">B</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>collector2输出数据===&gt; 数据越大 优先级越高</p>
+<p>failover测试</p>
+<ul>
+<li>
+<p>杀死2的进程 1中输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jps -m </span><br><span class="line">kill -9 ****</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>过了10秒 再启动2  2中输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name collector2 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/failovercollector-2.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="interceptor">interceptor</h3>
+<p>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"># define agent: a1</span><br><span class="line">a1.sources = r1</span><br><span class="line">a1.channels = c1</span><br><span class="line">a1.sinks = k1</span><br><span class="line"></span><br><span class="line"># define source</span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = 0.0.0.0</span><br><span class="line">a1.sources.r1.port = 44444</span><br><span class="line"></span><br><span class="line">a1.sources.r1.interceptors = i1 i2 i3</span><br><span class="line">a1.sources.r1.interceptors.i1.type = static</span><br><span class="line">a1.sources.r1.interceptors.i1.key = a</span><br><span class="line">a1.sources.r1.interceptors.i1.value = aa</span><br><span class="line">a1.sources.r1.interceptors.i1.key = b</span><br><span class="line">a1.sources.r1.interceptors.i1.value = bb</span><br><span class="line"></span><br><span class="line">a1.sources.r1.interceptors.i2.type = host</span><br><span class="line">a1.sources.r1.interceptors.i2.useIP = false</span><br><span class="line">a1.sources.r1.interceptors.i2.hostHeader = hostname</span><br><span class="line"></span><br><span class="line">a1.sources.r1.interceptors.i3.type = org.apache.flume.sink.solr.morphline.UUIDInterceptor$Builder</span><br><span class="line">a1.sources.r1.interceptors.i3.headerName = uuid</span><br><span class="line">	</span><br><span class="line">#define channel</span><br><span class="line">a1.channels.c1.type = memory </span><br><span class="line"></span><br><span class="line"># define sink </span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"># build </span><br><span class="line">a1.sources.r1.channels = c1  </span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+<p>启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent \</span><br><span class="line">--name a1 \</span><br><span class="line">--conf $FLUME_HOME/conf \</span><br><span class="line">--conf-file $FLUME_HOME/config/other-interceptor.conf \</span><br><span class="line">-Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+<p>telnet localhost 44444</p>
+<p>输入数据</p>
+<p>查看终端的输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> [INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;b=bb, hostname=hadoop001, uuid=77e286ed-0240-485a-82d5-6f3f5bfc0afb&#125; body: 31 0D                                           1. &#125;</span><br><span class="line">[INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;b=bb, hostname=hadoop001, uuid=18ee961e-6150-4fcd-8cec-008f2a4370d8&#125; body: 32 0D                                           2. &#125;</span><br><span class="line">[INFO - org.apache.flume.sink.LoggerSink.process(LoggerSink.java:95)] Event: &#123; headers:&#123;b=bb, hostname=hadoop001, uuid=317aceb9-2b87-4719-80eb-b0ae15ac275b&#125; body: 33 0D                                           3. &#125;</span><br></pre></td></tr></table></figure>
+<p>static拦截器</p>
+<p>如果配置了多个, 后面覆盖前面的, 保留最后一个 key value</p>
+<h3 id="code整合">code整合</h3>
+<p>加入依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> &lt;flume.version&gt;1.6.0-cdh5.16.2&lt;/flume.version&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.flume&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;flume-ng-node&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;$&#123;flume.version&#125;&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.flume.flume-ng-clients&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;flume-ng-log4jappender&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;$&#123;flume.version&#125;&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>resources中加入配置文件log4j.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootLogger=INFO,stdout,myflume</span><br><span class="line"></span><br><span class="line">log4j.appender.stdout = org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.stdout.target = System.out</span><br><span class="line">log4j.appender.stdout.layout = org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.stdout.layout.ConversionPattern = %d&#123;HH:mm:ss,SSS&#125;[%t] [%c] [%p] - %m%n</span><br><span class="line"></span><br><span class="line">log4j.appender.myflume = org.apache.flume.clients.log4jappender.Log4jAppender</span><br><span class="line">log4j.appender.myflume.Hostname = hadoop001</span><br><span class="line">log4j.appender.myflume.Port = 44444</span><br><span class="line">log4j.appender.myflume.UnsafeMode = true</span><br></pre></td></tr></table></figure>
+<p>config目录中的配置文件flume-code.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">agent1.sources = avro-source</span><br><span class="line">agent1.channels = logger-channel</span><br><span class="line">agent1.sinks = log-sink</span><br><span class="line"></span><br><span class="line"># define channel</span><br><span class="line">agent1.channels.logger-channel.type = memory</span><br><span class="line"></span><br><span class="line"># define source</span><br><span class="line">agent1.sources.avro-source.channels = logger-channel</span><br><span class="line">agent1.sources.avro-source.type = avro</span><br><span class="line">agent1.sources.avro-source.bind = 0.0.0.0</span><br><span class="line">agent1.sources.avro-source.port = 44444</span><br><span class="line"></span><br><span class="line"># define sink</span><br><span class="line">agent1.sinks.log-sink.channel = logger-channel</span><br><span class="line">agent1.sinks.log-sink.type = logger</span><br></pre></td></tr></table></figure>
+<p>启动</p>
+<p>flume-ng agent <br>
+–name agent1 <br>
+–conf $FLUME_HOME/conf <br>
+–conf-file $FLUME_HOME/config/flume-code.conf <br>
+-Dflume.root.logger=INFO,console</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/hadoop(三)读写流程/" data-toggle="tooltip" data-placement="top" title="hadoop(三)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#flume入门"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Flume&#x5165;&#x95E8;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#介绍"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x4ECB;&#x7ECD;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#flume三个核心组件"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">Flume&#x4E09;&#x4E2A;&#x6838;&#x5FC3;&#x7EC4;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#source-对接数据源-a"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">Source &#xFF1A; &#x5BF9;&#x63A5;&#x6570;&#x636E;&#x6E90;    A</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#channel-聚集-解耦"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">Channel&#xFF1A; &#x805A;&#x96C6;          &#x89E3;&#x8026;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sink-对接目的地-b"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">Sink   &#xFF1A; &#x5BF9;&#x63A5;&#x76EE;&#x7684;&#x5730;    B</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#配置文件"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#安装部署"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#上传targz包-解压-配置环境变量"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">&#x4E0A;&#x4F20;tar.gz&#x5305; &#x89E3;&#x538B; &#x914D;&#x7F6E;&#x73AF;&#x5883;&#x53D8;&#x91CF;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#目录结构"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">&#x76EE;&#x5F55;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#简单使用"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">&#x7B80;&#x5355;&#x4F7F;&#x7528;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#配置文件"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#运行命令"><span class="toc-nav-number">1.5.2.</span> <span class="toc-nav-text">&#x8FD0;&#x884C;&#x547D;&#x4EE4;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用1-exec-hdfs"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;1: exec   hdfs</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用2-spooling-directory"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;2: Spooling Directory</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用3-spooling-hdfs"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;3: Spooling HDFS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用4-taildir-断点续传"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;4: tailDir &#x65AD;&#x70B9;&#x7EED;&#x4F20;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用5-avroclient"><span class="toc-nav-number">1.10.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;5: avroclient</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用6-multi-agent-flow"><span class="toc-nav-number">1.11.</span> <span class="toc-nav-text">&#x4F7F;&#x7528;6: multi-agent flow</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#channel-selector"><span class="toc-nav-number">1.12.</span> <span class="toc-nav-text">channel selector</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#replicating-channel-selector"><span class="toc-nav-number">1.12.1.</span> <span class="toc-nav-text">replicating channel selector</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#multiplexing-channel-selector"><span class="toc-nav-number">1.13.</span> <span class="toc-nav-text">Multiplexing Channel Selector</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#sink-processor"><span class="toc-nav-number">1.14.</span> <span class="toc-nav-text">sink Processor</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#interceptor"><span class="toc-nav-number">1.15.</span> <span class="toc-nav-text">interceptor</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#code整合"><span class="toc-nav-number">1.16.</span> <span class="toc-nav-text">code&#x6574;&#x5408;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'rz'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/PsycheLee">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; PsycheLee 2021 
+                    By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
+                   
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://psychelee.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://psychelee.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

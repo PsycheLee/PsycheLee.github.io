@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          hadoopHA部署 - lixuelian | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://psychelee.github.io/article/hadoopHA部署/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                            
+                        </div>
+                        <h1>hadoopHA部署</h1>
+                        <h2 class="subheading">This is about hadoop HA</h2>
+                        <span class="meta">
+                            Posted by PsycheLee on
+                            2017-09-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Psyche&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="hadoopha部署">hadoopHA部署</h2>
+<h3 id="1阿里云三台机器-按量付费">1.阿里云三台机器  按量付费</h3>
+<h4 id="11window的hosts文件">1.1window的hosts文件</h4>
+<p>C:\Windows\System32\drivers\etc\HOSTS</p>
+<p>外网ip 机器名称</p>
+<p>停机不收费 ，其实只是收费极低</p>
+<h4 id="12-运行hostname-lxl001命令修改主机名">1.2 运行hostname lxl001命令修改主机名</h4>
+<p>linux的hosts文件 /etc/hosts,三个机器名都需要追加到三台机器的hosts文件<br>
+追加 内网IP 机器名称</p>
+<h4 id="13阿里云安全组端口打开">1.3阿里云安全组端口打开</h4>
+<h3 id="2安装上传下载工具">2.安装上传下载工具</h3>
+<p>yum install -y lrzsz命令</p>
+<h3 id="3-创建用户和目录">3. 创建用户和目录</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@lixuelian001 ~]# useradd bigdata</span><br><span class="line">[root@lixuelian001 ~]# su - bigdata</span><br><span class="line">[bigdata@lixuelian001 ~]$ mkdir software app tmp data log lib shell sourcecode</span><br><span class="line">[bigdata@lixuelian001 ~]$ ll</span><br><span class="line">total 32</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 app</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 data</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 lib</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 log</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 shell</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 software</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 sourcecode</span><br><span class="line">drwxrwxr-x 2 bigdata bigdata 4096 Jan 17 10:38 tmp</span><br></pre></td></tr></table></figure>
+<h3 id="4-上传安装包">4. 上传安装包</h3>
+<p>jdk-8u45-linux-x64<br>
+hadoop-2.6.0-cdh5.16.2.tar.gz<br>
+zookeeper-3.4.5-cdh5.16.2.tar.gz</p>
+<p>使用rz或者scp * 用户名@内网ip:/home/bigdata/software</p>
+<h3 id="5配置信任关系">5.配置信任关系</h3>
+<p>5.1三台机器都执行ssh-keygen，回车</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">[root@lixuelian001 ~]# ssh-keygen</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/root/.ssh/id_rsa): </span><br><span class="line">Enter passphrase (empty for no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved in /root/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved in /root/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">e0:33:75:eb:88:32:39:23:67:78:71:0d:cd:2c:e7:81 root@lixuelian001</span><br><span class="line">The key&apos;s randomart image is:</span><br><span class="line">+--[ RSA 2048]----+</span><br><span class="line">|                 |</span><br><span class="line">|       =         |</span><br><span class="line">|      E B .      |</span><br><span class="line">|     . O o .     |</span><br><span class="line">|    . = S .      |</span><br><span class="line">|   . + + o       |</span><br><span class="line">|  o X . . .      |</span><br><span class="line">|   = =           |</span><br><span class="line">|                 |</span><br><span class="line">+-----------------+</span><br><span class="line">[root@lixuelian001 ~]# ll -a</span><br><span class="line">total 48</span><br><span class="line">dr-xr-x---.  5 root root 4096 Jan 17 10:26 .</span><br><span class="line">dr-xr-xr-x. 18 root root 4096 Jan 17 10:06 ..</span><br><span class="line">-rw-------   1 root root   36 Jan 17 10:26 .bash_history</span><br><span class="line">-rw-r--r--.  1 root root   18 Dec 29  2013 .bash_logout</span><br><span class="line">-rw-r--r--.  1 root root  176 Dec 29  2013 .bash_profile</span><br><span class="line">-rw-r--r--.  1 root root  176 Dec 29  2013 .bashrc</span><br><span class="line">drwx------   3 root root 4096 Aug 17  2017 .cache</span><br><span class="line">-rw-r--r--.  1 root root  100 Dec 29  2013 .cshrc</span><br><span class="line">drwxr-xr-x   2 root root 4096 Aug 17  2017 .pip</span><br><span class="line">-rw-r--r--   1 root root   64 Aug 17  2017 .pydistutils.cfg</span><br><span class="line">drwx------   2 root root 4096 Jan 17 11:02 .ssh</span><br><span class="line">-rw-r--r--.  1 root root  129 Dec 29  2013 .tcshrc</span><br><span class="line">[root@lixuelian001 ~]# cd .ssh</span><br><span class="line">[root@lixuelian001 .ssh]# ll</span><br><span class="line">total 8</span><br><span class="line">-rw------- 1 root root    0 Jan 17 10:06 authorized_keys</span><br><span class="line">-rw------- 1 root root 1679 Jan 17 11:02 id_rsa</span><br><span class="line">-rw-r--r-- 1 root root  399 Jan 17 11:02 id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>5.2将002和003生成的.pub文件传给001,并且将三个机器的.pub文件追加到001的authorized_key上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian002 ~]# cd .ssh</span><br><span class="line">[bigdata@lixuelian002 .ssh]# ll</span><br><span class="line">total 8</span><br><span class="line">-rw------- 1 bigdata bigdata    0 Jan 17 10:06 authorized_keys</span><br><span class="line">-rw------- 1 bigdata bigdata 1679 Jan 17 11:02 id_rsa</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata  399 Jan 17 11:02 id_rsa.pub</span><br><span class="line">[bigdata@lixuelian002 .ssh]# scp id_rsa.pub lixuelian001:~/.ssh/id_rsa.pub2</span><br><span class="line">The authenticity of host &apos;lixuelian001 (172.24.12.86)&apos; can&apos;t be established.</span><br><span class="line">ECDSA key fingerprint is 13:66:1d:e0:67:9c:56:ff:69:20:8b:33:05:97:51:63.</span><br><span class="line">Are you sure you want to continue connecting (yes/no)? yes</span><br><span class="line">Warning: Permanently added &apos;lixuelian001,172.24.12.86&apos; (ECDSA) to the list of known hosts.</span><br><span class="line">root@lixuelian001&apos;s password: </span><br><span class="line">id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>003同样操作,查看001</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 .ssh]# ll</span><br><span class="line">total 16</span><br><span class="line">-rw------- 1 bigdata bigdata    0 Jan 17 10:06 authorized_keys</span><br><span class="line">-rw------- 1 bigdata bigdata 1679 Jan 17 11:02 id_rsa</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata  399 Jan 17 11:02 id_rsa.pub</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata 399 Jan 17 11:11 id_rsa.pub2</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata  399 Jan 17 11:11 id_rsa.pub3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 .ssh]# cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line">[bigdata@lixuelian001 .ssh]# cat ~/.ssh/id_rsa.pub2 &gt;&gt; ~/.ssh/authorized_keys</span><br><span class="line">[bigdata@lixuelian001 .ssh]# cat ~/.ssh/id_rsa.pub3 &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>5.3将authorized_key传给002和003</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 .ssh]# scp authorized_keys lixuelian002:~/.ssh/authorized_keys</span><br><span class="line">[bigdata@lixuelian001 .ssh]# scp authorized_keys lixuelian003:~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>5.4 文档权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 .ssh]$ chmod 0600 ~/.ssh/authorized_keys</span><br><span class="line">[bigdata@lixuelian002 .ssh]$ chmod 0600 ~/.ssh/authorized_keys</span><br><span class="line">[bigdata@lixuelian003 .ssh]$ chmod 0600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>5 验证 [无需输入密码就成功]</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 .ssh]# ssh lixuelian001 date</span><br><span class="line">Sun Jan 17 11:30:14 CST 2021</span><br><span class="line">[bigdata@lixuelian001 .ssh]# ssh lixuelian002 date</span><br><span class="line">Sun Jan 17 11:30:17 CST 2021</span><br><span class="line">[bigdata@lixuelian001 .ssh]# ssh lixuelian003 date</span><br><span class="line">Sun Jan 17 11:30:19 CST 2021</span><br></pre></td></tr></table></figure>
+<h3 id="6安装jdk">6.安装JDK</h3>
+<p>注意解压安装到/usr/java/</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@lixuelian001 software]# mkdir /usr/java     </span><br><span class="line"></span><br><span class="line">[root@lixuelian001 software]# tar -xzvf jdk-8u45-linux-x64.gz -C /usr/java/</span><br><span class="line"></span><br><span class="line">[root@lixuelian003 software]# cd /usr/java</span><br><span class="line">[root@lixuelian003 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 8 10 143 4096 Apr 11  2015 jdk1.8.0_45</span><br></pre></td></tr></table></figure>
+<p>解压后修改文件所属用户和用户组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@lixuelian003 java]# chown -R root:root jdk1.8.0_45</span><br></pre></td></tr></table></figure>
+<p>配置环境变量</p>
+<p>/etc/profile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_45</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line"></span><br><span class="line">[root@lixuelian001 software]# source /etc/profile</span><br><span class="line">[root@lixuelian001 software]# which java</span><br><span class="line">/usr/java/jdk1.8.0_45/bin/java</span><br></pre></td></tr></table></figure>
+<h3 id="7安装zookeeper">7.安装zookeeper</h3>
+<p>使用bigdata用户</p>
+<p>1.解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 software]$  tar -xzvf zookeeper-3.4.5-cdh5.16.2.tar.gz -C ~/app/</span><br><span class="line">[bigdata@lixuelian001 software]$ cd ~/app</span><br><span class="line">[bigdata@lixuelian001 app]$ ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 14 bigdata bigdata 4096 Jun  3  2019 zookeeper-3.4.5-cdh5.16.2</span><br></pre></td></tr></table></figure>
+<p>检查文件权限</p>
+<p>2.建立软连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 app]$ ln -s zookeeper-3.4.5-cdh5.16.2/ zookeeper</span><br><span class="line">[bigdata@lixuelian001 app]$ ll</span><br><span class="line">total 4</span><br><span class="line">lrwxrwxrwx  1 bigdata bigdata   26 Jan 17 13:10 zookeeper -&gt; zookeeper-3.4.5-cdh5.16.2/</span><br><span class="line">drwxr-xr-x 14 bigdata bigdata 4096 Jun  3  2019 zookeeper-3.4.5-cdh5.16.2</span><br></pre></td></tr></table></figure>
+<p>3.修改配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 zookeeper]$ mkdir data</span><br><span class="line">[bigdata@lixuelian001 zookeeper]$ cd conf</span><br><span class="line">[bigdata@lixuelian001 conf]$ ll</span><br><span class="line">total 12</span><br><span class="line">-rw-rw-r-- 1 bigdata bigdata  535 Jun  3  2019 configuration.xsl</span><br><span class="line">-rw-rw-r-- 1 bigdata bigdata 2693 Jun  3  2019 log4j.properties</span><br><span class="line">-rw-rw-r-- 1 bigdata bigdata  922 Jun  3  2019 zoo_sample.cfg</span><br><span class="line">[bigdata@lixuelian001 conf]$ cp zoo_sample.cfg zoo.cfg</span><br><span class="line">[bigdata@lixuelian001 conf]$ vi zoo.cfg</span><br><span class="line">#修改dataDir文件路径</span><br><span class="line">dataDir=/home/bigdata/app/zookeeper/data</span><br><span class="line">#追加</span><br><span class="line">server.1=hadoop001:2888:3888</span><br><span class="line">server.2=hadoop002:2888:3888</span><br><span class="line">server.3=hadoop003:2888:3888</span><br></pre></td></tr></table></figure>
+<p>3.创建myid文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#在上面写的dataDir文件路径下创建</span><br><span class="line">[bigdata@lixuelian001 data]$ touch myid     </span><br><span class="line">[bigdata@lixuelian001 data]$ echo 1 &gt; myid</span><br><span class="line">[bigdata@lixuelian001 data]$ cat myid </span><br><span class="line">1</span><br><span class="line">002和003 分别追加echo 2 和 echo 3 到myid</span><br><span class="line">命令&quot;&gt;&quot;前后必须要有空格,</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>
+<p>配置环境变量</p>
+</li>
+<li>
+<p>启动</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian003 bin]$ sh zkServer.sh start</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /home/bigdata/app/zookeeper/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[bigdata@lixuelian003 bin]$ sh zkServer.sh status</span><br><span class="line">JMX enabled by default</span><br><span class="line">Using config: /home/bigdata/app/zookeeper/bin/../conf/zoo.cfg</span><br><span class="line">Mode: leader</span><br></pre></td></tr></table></figure>
+<p>另外两台mode是follower</p>
+<h3 id="8安装hadoop">8.安装Hadoop</h3>
+<p>1.解压,创建软连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 app]$ tar -xzvf hadoop-2.6.0-cdh5.16.2.tar.gz -C ~/app/</span><br><span class="line"></span><br><span class="line">[bigdata@lixuelian001 app]$ ln -s hadoop-2.6.0-cdh5.16.2 hadoop</span><br></pre></td></tr></table></figure>
+<p><a href="http://2.xn--hadoop-env-yu6pe85r.sh" target="_blank" rel="noopener">2.修改hadoop-env.sh</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">进入目录/home/bigdata/app/hadoop/etc/hadoop</span><br><span class="line">vi hadoop-env.sh</span><br><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_45</span><br></pre></td></tr></table></figure>
+<p>3.修改</p>
+<p>core-site.xml</p>
+<p>hdfs-site.xml</p>
+<p>mapred-site.xml</p>
+<p>yarn-site.xml</p>
+<p>salves</p>
+<ol start="4">
+<li>如果copy Windows的文件到linux, 使用dos2unix+文件名的命令 解决格式问题</li>
+</ol>
+<h3 id="9启动">9.启动</h3>
+<p>1.启动日志节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 hadoop]$ cd ~/app/hadoop/sbin</span><br><span class="line">[bigdata@lixuelian001 sbin]$ sh hadoop-daemon.sh start journalnode</span><br><span class="line">starting journalnode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-journalnode-lixuelian001.out</span><br><span class="line">[bigdata@lixuelian001 sbin]$ jps</span><br><span class="line">19520 Jps</span><br><span class="line">19132 QuorumPeerMain</span><br><span class="line">19471 JournalNode</span><br><span class="line">[bigdata@lixuelian001 sbin]$</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>
+<p>格式化</p>
+<p>001进行namenode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 bin]$ sh hadoop namenode -format</span><br><span class="line">...</span><br><span class="line">21/01/17 14:48:31 INFO common.Storage: Storage directory /home/bigdata/data/dfs/name has been successfully formatted.</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>将001的元数据传输到002</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 bin]$ scp -r /home/bigdata/data/dfs</span><br><span class="line">root@lixuelian002:/home/bigdata/data</span><br></pre></td></tr></table></figure>
+<p>3.初始化ZKFC,仅需在001上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 bin]$ sh hdfs zkfc -format</span><br><span class="line"></span><br><span class="line">21/01/17 14:57:13 INFO ha.ActiveStandbyElector: Successfully created /hadoop-ha/lixuelianclusterg10 in ZK.21/01/17 14:57:13 INFO ha.ActiveStandbyElector: Successfully created /hadoop-ha/lixuelianclusterg10 in ZK.</span><br></pre></td></tr></table></figure>
+<p>4.启动hdfs,在一台机器上启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 ~]$ cd app/hadoop/sbin/</span><br><span class="line">[bigdata@lixuelian001 sbin]$ sh start-dfs.sh</span><br><span class="line">which: no start-dfs.sh in (/usr/java/jdk1.8.0_45/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/bigdata/.local/bin:/home/bigdata/bin)</span><br><span class="line">21/01/17 16:24:39 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line">Starting namenodes on [lixuelian001 lixuelian002]</span><br><span class="line">lixuelian001: starting namenode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-namenode-lixuelian001.out</span><br><span class="line">lixuelian002: starting namenode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-namenode-lixuelian002.out</span><br><span class="line">lixuelian001: starting datanode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-datanode-lixuelian001.out</span><br><span class="line">lixuelian003: starting datanode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-datanode-lixuelian003.out</span><br><span class="line">lixuelian002: starting datanode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-datanode-lixuelian002.out</span><br><span class="line">Starting journal nodes [lixuelian001 lixuelian002 lixuelian003]</span><br><span class="line">lixuelian002: journalnode running as process 21411. Stop it first.</span><br><span class="line">lixuelian001: starting journalnode, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-journalnode-lixuelian001.out</span><br><span class="line">lixuelian003: journalnode running as process 20590. Stop it first.</span><br><span class="line">21/01/17 16:24:54 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line">Starting ZK Failover Controllers on NN hosts [lixuelian001 lixuelian002]</span><br><span class="line">lixuelian002: zkfc running as process 21491. Stop it first.</span><br><span class="line">lixuelian001: starting zkfc, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/hadoop-bigdata-zkfc-lixuelian001.out</span><br><span class="line">[bigdata@lixuelian001 sbin]$ jps</span><br><span class="line">25412 NameNode</span><br><span class="line">25898 DFSZKFailoverController</span><br><span class="line">25754 JournalNode</span><br><span class="line">19132 QuorumPeerMain</span><br><span class="line">25549 DataNode</span><br><span class="line">25950 Jps</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>
+<p>002机器也是一样的进程</p>
+</li>
+<li>
+<p>页面查看</p>
+<p>Windows的hosts配置了, 可直接访问机器名</p>
+<p><a href="http://lixuelian001:50070/" target="_blank" rel="noopener">http://lixuelian001:50070/</a></p>
+<p><a href="http://lixuelian002:50070/" target="_blank" rel="noopener">http://lixuelian002:50070/</a></p>
+<p>一个active 一个standby</p>
+</li>
+<li>
+<p>启动yarn</p>
+<p>001</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian001 sbin]$ sh start-yarn.sh</span><br><span class="line">starting yarn daemons</span><br><span class="line">which: no start-yarn.sh in (/usr/java/jdk1.8.0_45/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/bigdata/.local/bin:/home/bigdata/bin)</span><br><span class="line">starting resourcemanager, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/yarn-bigdata-resourcemanager-lixuelian001.out</span><br><span class="line">lixuelian002: starting nodemanager, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/yarn-bigdata-nodemanager-lixuelian002.out</span><br><span class="line">lixuelian003: starting nodemanager, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/yarn-bigdata-nodemanager-lixuelian003.out</span><br><span class="line">lixuelian001: starting nodemanager, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/yarn-bigdata-nodemanager-lixuelian001.out</span><br><span class="line">[bigdata@lixuelian001 sbin]$ jps</span><br><span class="line">25412 NameNode</span><br><span class="line">26057 ResourceManager</span><br><span class="line">26378 Jps</span><br><span class="line">25898 DFSZKFailoverController</span><br><span class="line">25754 JournalNode</span><br><span class="line">26155 NodeManager</span><br><span class="line">19132 QuorumPeerMain</span><br><span class="line">25549 DataNode</span><br></pre></td></tr></table></figure>
+<p>002</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@lixuelian002 sbin]$ sh yarn-daemon.sh start resourcemanager</span><br><span class="line">which: no yarn-daemon.sh in (/usr/java/jdk1.8.0_45/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/bigdata/.local/bin:/home/bigdata/bin)</span><br><span class="line">starting resourcemanager, logging to /home/bigdata/app/hadoop-2.6.0-cdh5.16.2/logs/yarn-bigdata-resourcemanager-lixuelian002.out</span><br><span class="line">[bigdata@lixuelian002 sbin]$ jps</span><br><span class="line">22578 Jps</span><br><span class="line">21411 JournalNode</span><br><span class="line">21491 DFSZKFailoverController</span><br><span class="line">22388 NodeManager</span><br><span class="line">22165 DataNode</span><br><span class="line">19189 QuorumPeerMain</span><br><span class="line">22523 ResourceManager</span><br><span class="line">22046 NameNode</span><br></pre></td></tr></table></figure>
+<p>页面查看</p>
+<p><a href="http://lixuelian001:8088/" target="_blank" rel="noopener">http://lixuelian001:8088/</a></p>
+<p><a href="http://lixuelian002:8088/cluster/cluster" target="_blank" rel="noopener">http://lixuelian002:8088/cluster/cluster</a></p>
+</li>
+</ol>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/hive_2/" data-toggle="tooltip" data-placement="top" title="hive(2)">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/hive入门/" data-toggle="tooltip" data-placement="top" title="hive入门">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hadoopha部署"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">hadoopHA&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1阿里云三台机器-按量付费"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.&#x963F;&#x91CC;&#x4E91;&#x4E09;&#x53F0;&#x673A;&#x5668;  &#x6309;&#x91CF;&#x4ED8;&#x8D39;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#11window的hosts文件"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1.1window&#x7684;hosts&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#12-运行hostname-lxl001命令修改主机名"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">1.2 &#x8FD0;&#x884C;hostname lxl001&#x547D;&#x4EE4;&#x4FEE;&#x6539;&#x4E3B;&#x673A;&#x540D;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#13阿里云安全组端口打开"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">1.3&#x963F;&#x91CC;&#x4E91;&#x5B89;&#x5168;&#x7EC4;&#x7AEF;&#x53E3;&#x6253;&#x5F00;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2安装上传下载工具"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2.&#x5B89;&#x88C5;&#x4E0A;&#x4F20;&#x4E0B;&#x8F7D;&#x5DE5;&#x5177;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-创建用户和目录"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">3. &#x521B;&#x5EFA;&#x7528;&#x6237;&#x548C;&#x76EE;&#x5F55;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4-上传安装包"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">4. &#x4E0A;&#x4F20;&#x5B89;&#x88C5;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5配置信任关系"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">5.&#x914D;&#x7F6E;&#x4FE1;&#x4EFB;&#x5173;&#x7CFB;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6安装jdk"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">6.&#x5B89;&#x88C5;JDK</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7安装zookeeper"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">7.&#x5B89;&#x88C5;zookeeper</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8安装hadoop"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">8.&#x5B89;&#x88C5;Hadoop</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9启动"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">9.&#x542F;&#x52A8;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'rz'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/PsycheLee">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; PsycheLee 2021 
+                    By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
+                   
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://psychelee.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://psychelee.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

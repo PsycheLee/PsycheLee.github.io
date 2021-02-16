@@ -18,7 +18,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://psychelee.github.io/article/jdk安装/">
+    <link rel="canonical" href="http://psychelee.github.io/article/1_template/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -212,17 +212,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="jdk的linux安装">jdk的linux安装</h2>
-<h3 id="1上传安装包">1.上传安装包</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# ll</span><br><span class="line">total 717636</span><br><span class="line">-rw-r--r-- 1 root root 185646832 Nov 28 08:56 jdk-8u181-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
-<h3 id="2创建文件夹">2.创建文件夹</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# mkdir -p /usr/java</span><br></pre></td></tr></table></figure>
-<h3 id="3解压">3.解压</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 ~]# tar -xzvf jdk-8u181-linux-x64.tar.gz -C /usr/java</span><br></pre></td></tr></table></figure>
-<h3 id="4赋权">4.赋权</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 7 10 143 4096 Jul  7  2018 jdk1.8.0_181</span><br><span class="line">[root@hadoop001 java]# chown -R root:root jdk1.8.0_181/</span><br><span class="line">[root@hadoop001 java]# ll</span><br><span class="line">total 4</span><br><span class="line">drwxr-xr-x 7 root root 4096 Jul  7  2018 jdk1.8.0_181</span><br><span class="line">[root@hadoop001 java]#</span><br></pre></td></tr></table></figure>
-<h3 id="5环境变量配置">5.环境变量配置</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop001 java]# vi /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_181</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br><span class="line">[root@hadoop001 java]# source /etc/profile</span><br><span class="line">[root@hadoop001 java]# which java</span><br><span class="line">/usr/java/jdk1.8.0_181/bin/java</span><br><span class="line">[root@hadoop001 java]# echo $PATH</span><br><span class="line">/usr/java/jdk1.8.0_181/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin</span><br></pre></td></tr></table></figure>
+                <h2 id="title">Title</h2>
 
                 
 
@@ -231,12 +221,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/hadoop(四)HDFS命令/" data-toggle="tooltip" data-placement="top" title="hadoop(四)hdfs命令">&larr; Previous Post</a>
+                            <a href="/article/hadoop(一)入门/" data-toggle="tooltip" data-placement="top" title="hadoop(一)入门">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/rundeck入门/" data-toggle="tooltip" data-placement="top" title="rundeck入门">Next Post &rarr;</a>
+                            <a href="/article/hadoop(三)读写流程/" data-toggle="tooltip" data-placement="top" title="hadoop(三)">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -286,7 +276,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#jdk的linux安装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">jdk&#x7684;linux&#x5B89;&#x88C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1上传安装包"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.&#x4E0A;&#x4F20;&#x5B89;&#x88C5;&#x5305;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2创建文件夹"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2.&#x521B;&#x5EFA;&#x6587;&#x4EF6;&#x5939;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3解压"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">3.&#x89E3;&#x538B;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4赋权"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">4.&#x8D4B;&#x6743;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5环境变量配置"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">5.&#x73AF;&#x5883;&#x53D8;&#x91CF;&#x914D;&#x7F6E;</span></a></li></ol></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#title"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Title</span></a></li></ol>
         
         </div>
       </aside>
