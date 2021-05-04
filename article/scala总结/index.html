@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          jdk的linux安装 - lixuelian | Blog
+          scala总结 - lixuelian | Blog
         
     </title>
 
@@ -91,11 +91,11 @@
                               <a class="tag" href="/tags/#shell" title="shell">shell</a>
                             
                         </div>
-                        <h1>jdk的linux安装</h1>
-                        <h2 class="subheading">This is about jdk</h2>
+                        <h1>scala总结</h1>
+                        <h2 class="subheading">This is about scala</h2>
                         <span class="meta">
                             Posted by PsycheLee on
-                            2015-09-08
+                            2015-11-08
                         </span>
                     </div>
                 
@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -212,7 +212,101 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="title">Title</h2>
+                <h2 id="scala总结">Scala总结</h2>
+<h3 id="var-val">var val</h3>
+<ul>
+<li>var定义变量，值可变</li>
+<li>val定义常量，只能被赋值⼀次</li>
+<li>建议使⽤val，val不满⾜时候再使⽤var</li>
+<li>类中使用var声明的字段默认有getter setter方法, val只有getter</li>
+</ul>
+<h3 id="数据类型">数据类型</h3>
+<h4 id="常用">常用</h4>
+<p>Int、Long、Float、Double、Boolean、String</p>
+<h4 id="特殊">特殊</h4>
+<h5 id="-unit">- Unit</h5>
+<p>表示⽆值，和其他语⾔中void等同。⽤作不返回任何结果的⽅法的结果类型。Unit只有⼀个实例值，写成()。</p>
+<h5 id="-null-null-或空引用">- Null null 或空引⽤</h5>
+<h5 id="-nothing">- Nothing</h5>
+<p>Nothing类型在Scala的类层级的最底端；它是任何其他类型的⼦类型。</p>
+<h5 id="-any">- Any</h5>
+<p>Any是所有其他类的超类</p>
+<h5 id="-anyref">- AnyRef</h5>
+<p>AnyRef类是Scala⾥所有引⽤类(reference class)的基类</p>
+<p><img src="E:%5Chexo%5Cblog%5Cpsyche-hexo%5Csource%5Cimg%5Carticle%5Cscala%E7%B1%BB%E5%9E%8B.png" alt="image-20210305202726972"></p>
+<h3 id="占位符_">占位符_</h3>
+<p>** 定义val不能使用</p>
+<p>var name:String = _    默认值null</p>
+<p>var d:Double = _  默认值0.0</p>
+<p>var i:Int = _ 默认值0</p>
+<p>var b:Boolean =_ 默认值 false</p>
+<h3 id="构造器">构造器</h3>
+<h4 id="主构造器">主构造器</h4>
+<p>Class person(name:String,age:Int)</p>
+<p>new class 类中除了⽅法不执⾏（构造⽅法会执⾏），其他都执⾏</p>
+<h4 id="附属构造器">附属构造器</h4>
+<p>def this(参数){}</p>
+<p>⼀个附属构造器中第⼀⾏必须要调⽤主构造器或者其他附属构造器  this( , )附属构造器⽤来补充主构造器，多个附属构造器类型不同，和名字⽆关</p>
+<h3 id="class-与-object">class 与 object</h3>
+<ul>
+<li>
+<p>object相当于java中的单例，object中定义的都是静态的</p>
+</li>
+<li>
+<p>object修饰的东⻄，调⽤时不需要new，直接 .属性/⽅法</p>
+</li>
+<li>
+<p>object xxx 和 class  xxx是伴⽣类  和   伴⽣对象，⼆者互为伴⽣<br>
+伴⽣类和伴⽣对象可以互相访问私有变量</p>
+</li>
+<li>
+<p>class可以传参；object不可以传参，除⾮⽤apply⽅法</p>
+<h4 id="apply方法">apply方法</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">object val b =ApplyTest  不会调用apply方法</span><br><span class="line">object  val b =ApplyTest() 调用apply方法</span><br><span class="line">class   val c = new ApplyTest() 对象(),调用class中的apply方法</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="class-与-case-class">class 与 case class</h3>
+<ul>
+<li>case class 默认实现了equals   hashcode方法,重写toString</li>
+<li>初始化的时候，不需要new</li>
+<li>默认是可以序列化的，也就是实现了Serializable</li>
+<li>⾃动从scala.Producet中继承了⼀些函数</li>
+<li>case class构造函数的参数是publiec级别的，可以直接访问</li>
+<li>⽀持模式匹配</li>
+</ul>
+<h3 id="case-class-与-case-object">case class 与 case object</h3>
+<ul>
+<li>
+<p>case class的toString⽅法和==被重写、序列化</p>
+</li>
+<li>
+<p>case class T() 必须带括号</p>
+</li>
+<li>
+<p>case object T 不能带括号,不能有参数</p>
+</li>
+</ul>
+<h3 id="array">Array</h3>
+<h4 id="定义">定义</h4>
+<p>不可变⻓数组定义：Array[类型](数组内容)     new Array[类型](⻓度)</p>
+<p>可变⻓数组定义：</p>
+<p>​		import scala.collection.mutable.ArrayBuffer<br>
+​		ArrayBuffer[类型](数组内容)</p>
+<h4 id="赋值">赋值</h4>
+<p>a(0)=“aa”<br>
+不改变原数组向后追加成新数组a1：val a1 = arr :+ 1<br>
+不改变原数组向前追加成新数组a2：val a2 = 1 +: arr</p>
+<h4 id="数组转字符串">数组转字符串</h4>
+<p>arr.mkString(“分隔类型”)<br>
+arr.mkString(“开头”, “分隔类型”, “结尾”)<br>
+数组插⼊数据：  .insert(位置, 内容)<br>
+数组删除数据：  .remove(位置)<br>
+数组移除n个数据:<br>
+							.trimStart(n)<br>
+							.trimEnd(n)<br>
+变⻓转定⻓：  .toArray<br>
+定⻓转变⻓：  .toBuffer</p>
+<h3 id="list">List</h3>
 
                 
 
@@ -221,12 +315,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/jdk安装/" data-toggle="tooltip" data-placement="top" title="jdk的linux安装">&larr; Previous Post</a>
+                            <a href="/article/hadoop(二)yarn部署/" data-toggle="tooltip" data-placement="top" title="hadoop(二)yarn部署">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/shell脚本入门/" data-toggle="tooltip" data-placement="top" title="shell脚本入门">Next Post &rarr;</a>
+                            <a href="/article/hadoop(一)入门/" data-toggle="tooltip" data-placement="top" title="hadoop(一)入门">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -276,7 +370,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#title"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Title</span></a></li></ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#scala总结"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Scala&#x603B;&#x7ED3;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#var-val"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">var val</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#数据类型"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x6570;&#x636E;&#x7C7B;&#x578B;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#常用"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">&#x5E38;&#x7528;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#特殊"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">&#x7279;&#x6B8A;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#-unit"><span class="toc-nav-number">1.2.2.1.</span> <span class="toc-nav-text">- Unit</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#-null-null-或空引用"><span class="toc-nav-number">1.2.2.2.</span> <span class="toc-nav-text">- Null null &#x6216;&#x7A7A;&#x5F15;&#x2F64;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#-nothing"><span class="toc-nav-number">1.2.2.3.</span> <span class="toc-nav-text">- Nothing</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#-any"><span class="toc-nav-number">1.2.2.4.</span> <span class="toc-nav-text">- Any</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#-anyref"><span class="toc-nav-number">1.2.2.5.</span> <span class="toc-nav-text">- AnyRef</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#占位符_"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x5360;&#x4F4D;&#x7B26;_</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#构造器"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">&#x6784;&#x9020;&#x5668;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#主构造器"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">&#x4E3B;&#x6784;&#x9020;&#x5668;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#附属构造器"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">&#x9644;&#x5C5E;&#x6784;&#x9020;&#x5668;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#class-与-object"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">class &#x4E0E; object</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#apply方法"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">apply&#x65B9;&#x6CD5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#class-与-case-class"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">class &#x4E0E; case class</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#case-class-与-case-object"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">case class &#x4E0E; case object</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#array"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">Array</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#定义"><span class="toc-nav-number">1.8.1.</span> <span class="toc-nav-text">&#x5B9A;&#x4E49;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#赋值"><span class="toc-nav-number">1.8.2.</span> <span class="toc-nav-text">&#x8D4B;&#x503C;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#数组转字符串"><span class="toc-nav-number">1.8.3.</span> <span class="toc-nav-text">&#x6570;&#x7EC4;&#x8F6C;&#x5B57;&#x7B26;&#x4E32;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#list"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">List</span></a></li></ol></li></ol>
         
         </div>
       </aside>

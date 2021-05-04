@@ -149,14 +149,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -215,6 +215,11 @@
                 <h1 id="hfdf_api">HFDF_API</h1>
 <h2 id="基础环境">基础环境</h2>
 <p>JDK 1.8</p>
+<p>windows本地</p>
+<ol>
+<li>windows上面创建任意一个Hadoop目录:然后在里面创建bin目录,把下载的hadoop.dll这个文件丢进去即可</li>
+<li>配置HADOOP的环境变量</li>
+</ol>
 <p>依赖</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;hadoop-client&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;$&#123;hadoop.version&#125;&lt;/version&gt; &lt;!--2.6.0-cdh5.16.2--&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;4.13&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br><span class="line">    &lt;/dependencies&gt;</span><br></pre></td></tr></table></figure>
 <h2 id="filesystem">FileSystem</h2>
@@ -554,12 +559,12 @@ Input ==&gt;  InputSplit(s) ==&gt; Mapper ==&gt; Shuffle ==&gt; Reducer ==&gt; O
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/article/1_template/" data-toggle="tooltip" data-placement="top" title="jdk的linux安装">&larr; Previous Post</a>
+                            <a href="/article/20130317Spark算子/" data-toggle="tooltip" data-placement="top" title="Spark算子">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/article/flume/" data-toggle="tooltip" data-placement="top" title="Flume入门">Next Post &rarr;</a>
+                            <a href="/article/MapReduce/" data-toggle="tooltip" data-placement="top" title="MapReduce">Next Post &rarr;</a>
                         </li>
                     
                 </ul>

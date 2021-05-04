@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          MapReduce - lixuelian | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://psychelee.github.io/article/MapReduce/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                            
+                        </div>
+                        <h1>MapReduce</h1>
+                        <h2 class="subheading">This is about mr</h2>
+                        <span class="meta">
+                            Posted by PsycheLee on
+                            2015-09-08
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Psyche&#39;s Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="mapreduce">MapReduce</h2>
+<h2 id="mr作业部署">MR作业部署</h2>
+<h3 id="将mysql的数据读取存到hdfs">将MySQL的数据读取存到HDFS</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">public class MySQLDBInputFormatDriver &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        String output = args[0];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Configuration configuration = new Configuration();</span><br><span class="line">        DBConfiguration.configureDB(configuration,</span><br><span class="line">                &quot;com.mysql.jdbc.Driver&quot;,</span><br><span class="line">                &quot;jdbc:mysql://hadoop001:3306/lxl&quot;,</span><br><span class="line">                &quot;root&quot;,</span><br><span class="line">                &quot;123456&quot;</span><br><span class="line">                );</span><br><span class="line"></span><br><span class="line">        Job job = Job.getInstance(configuration);</span><br><span class="line"></span><br><span class="line">        job.setJarByClass(MySQLDBInputFormatDriver.class);</span><br><span class="line"></span><br><span class="line">        job.setMapperClass(MyMapper.class);</span><br><span class="line">        job.setMapOutputKeyClass(NullWritable.class);</span><br><span class="line">        job.setMapOutputValueClass(DeptWritable.class);</span><br><span class="line"></span><br><span class="line">        String[] fieldNames = &#123;&quot;deptno&quot;, &quot;dname&quot;, &quot;loc&quot;&#125;;</span><br><span class="line">        DBInputFormat.setInput(job,DeptWritable.class,&quot;dept&quot;, &quot;&quot;, &quot;deptno&quot;, fieldNames);</span><br><span class="line"></span><br><span class="line">        FileSystem fileSystem = FileUtils.getFileSystem();</span><br><span class="line">        Path out = new Path(output);</span><br><span class="line">        if(fileSystem.exists(out))&#123;</span><br><span class="line">            fileSystem.delete(out, true);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        FileOutputFormat.setOutputPath(job, new Path(output));</span><br><span class="line"></span><br><span class="line">        final boolean result = job.waitForCompletion(true);</span><br><span class="line">        System.exit(result ? 0 : 1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static class MyMapper extends Mapper&lt;LongWritable, DeptWritable, NullWritable, DeptWritable&gt; &#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        protected void map(LongWritable key, DeptWritable value, Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">            context.write(NullWritable.get(), value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重点:</p>
+<ol>
+<li>
+<p>DBInputFormat.setInput设置读取的表,字段,条件,排序</p>
+</li>
+<li>
+<p>将本地的应用打包</p>
+</li>
+<li>
+<p>上传本地的jar, 然后在服务器上运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /home/bigdata/lib/hdfs-1.0-SNAPSHOT.jar com.lxl.mr_04.MySQLDBInputFormatDriver hdfs://hadoop001:9000/data6</span><br></pre></td></tr></table></figure>
+<p>可以传参,指定目录</p>
+</li>
+<li>
+<p>报错 CLASSNOTFOUND, MySQL驱动包找不到</p>
+<p>解决:</p>
+<p>​	第一种: 在服务器上$HADOOP_HOME/share/hadoop/yarn/这个路径上传MySQL驱动包</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[bigdata@hadoop001 yarn]$ ll</span><br><span class="line">total 7184</span><br><span class="line">...</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata    8982 Jun  3  2019 hadoop-yarn-server-tests-2.6.0-cdh5.16.2.jar</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata   39677 Jun  3  2019 hadoop-yarn-server-web-proxy-2.6.0-cdh5.16.2.jar</span><br><span class="line">drwxr-xr-x 2 bigdata bigdata    4096 Jun  3  2019 lib</span><br><span class="line">-rw-r--r-- 1 bigdata bigdata 1007502 Mar 13 18:49 mysql-connector-java-5.1.47.jar</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>​		第二种: 打包时将依赖包全部打入jar包中, 再上传到服务器上运行</p>
+<p>​		在pom中添加maven打包插件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;version&gt;3.0.0&lt;/version&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;descriptorRefs&gt;</span><br><span class="line">                        &lt;descriptorRef&gt;jar-with-dependencies&lt;/descriptorRef&gt;</span><br><span class="line">                    &lt;/descriptorRefs&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/configuration&gt;</span><br><span class="line">                &lt;executions&gt;</span><br><span class="line">                    &lt;execution&gt;</span><br><span class="line">                        &lt;id&gt;make-assembly&lt;/id&gt;</span><br><span class="line">                        &lt;!-- bind to the packaging phase --&gt;</span><br><span class="line">                        &lt;phase&gt;package&lt;/phase&gt;</span><br><span class="line">                        &lt;goals&gt;</span><br><span class="line">                            &lt;goal&gt;single&lt;/goal&gt;</span><br><span class="line">                        &lt;/goals&gt;</span><br><span class="line">                    &lt;/execution&gt;</span><br><span class="line">                &lt;/executions&gt;</span><br><span class="line"> &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<p>第三种: 使用RunnerTool和libjars命令</p>
+<p>**重点: **</p>
+<p><strong>1. 重写run方法, configuration通过getConf()获取,不能new</strong></p>
+<p>**2.使用命令: **</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar application.jar \</span><br><span class="line">mainClass \</span><br><span class="line">-libjars &quot;thirdpartlib_1.jar,thirdpartlib_2.jar ...&quot; \</span><br><span class="line">-files &quot;file1, file2 ...&quot; \</span><br><span class="line">userparam1, userparam2 ...</span><br></pre></td></tr></table></figure>
+<p><strong>必须保证 “-libjars” 和 “-files” 在 “hadoop jar application.jar” 后面 并且在 “userparam1, userparam2 …” 前面!如果在 “userparam1, userparam2 …” 后面，则会被当做 userparam 处理</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /home/bigdata/lib/hdfs-1.0-SNAPSHOT.jar \</span><br><span class="line">com.lxl.mr_04.MySQLDBInputFormatDriver \</span><br><span class="line">-libjars /home/bigdata/lib/mysql-connector-java-5.1.47.jar \</span><br><span class="line">hdfs://hadoop001:9000/data6/dept2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">public class MySQLDBInputFormatDriver  extends Configured implements Tool &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        int res = ToolRunner.run(new Configuration(), new MySQLDBInputFormatDriver(), args);</span><br><span class="line">        System.exit(res);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int run(String[] args) throws Exception &#123;</span><br><span class="line">        String output = args[0];</span><br><span class="line">        Configuration configuration = getConf();</span><br><span class="line">        DBConfiguration.configureDB(configuration,</span><br><span class="line">                &quot;com.mysql.jdbc.Driver&quot;,</span><br><span class="line">                &quot;jdbc:mysql://hadoop001:3306/lxl&quot;,</span><br><span class="line">                &quot;root&quot;,</span><br><span class="line">                &quot;123456&quot;</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        Job job = Job.getInstance(configuration);</span><br><span class="line"></span><br><span class="line">        job.setJarByClass(MySQLDBInputFormatDriver.class);</span><br><span class="line"></span><br><span class="line">        job.setMapperClass(MyMapper.class);</span><br><span class="line">        job.setMapOutputKeyClass(NullWritable.class);</span><br><span class="line">        job.setMapOutputValueClass(DeptWritable.class);</span><br><span class="line"></span><br><span class="line">        //job.addFileToClassPath(new Path(&quot;hdfs://hadoop001:9000/hadoop/mysql-connector-java-5.1.47.jar&quot;));</span><br><span class="line">        String[] fieldNames = &#123;&quot;deptno&quot;, &quot;dname&quot;, &quot;loc&quot;&#125;;</span><br><span class="line">        DBInputFormat.setInput(job,DeptWritable.class,&quot;dept&quot;, &quot;&quot;, &quot;deptno&quot;, fieldNames);</span><br><span class="line"></span><br><span class="line">        FileSystem fileSystem = FileUtils.getFileSystem();</span><br><span class="line">        Path out = new Path(output);</span><br><span class="line">        if(fileSystem.exists(out))&#123;</span><br><span class="line">            fileSystem.delete(out, true);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        FileOutputFormat.setOutputPath(job, new Path(output));</span><br><span class="line"></span><br><span class="line">        System.exit(job.waitForCompletion(true) ? 0 : 1);</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static class MyMapper extends Mapper&lt;LongWritable, DeptWritable, NullWritable, DeptWritable&gt; &#123;</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        protected void map(LongWritable key, DeptWritable value, Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">            context.write(NullWritable.get(), value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="hiveudf注册到源码中编译">Hive(UDF)注册到源码中编译</h2>
+<p>hive版本 hive-1.1.0-cdh5.16.2</p>
+<h3 id="编写udf函数">编写UDF函数</h3>
+<h4 id="pomxml">pom.xml</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line"> xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line"> &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line"></span><br><span class="line"> &lt;groupId&gt;com.ruozedata.bigdata&lt;/groupId&gt;</span><br><span class="line"> &lt;artifactId&gt;hive&lt;/artifactId&gt;</span><br><span class="line"> &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line"></span><br><span class="line"> &lt;name&gt;hive&lt;/name&gt;</span><br><span class="line"> &lt;!-- FIXME change it to the project&apos;s website --&gt;</span><br><span class="line"> &lt;url&gt;http://www.example.com&lt;/url&gt;</span><br><span class="line"></span><br><span class="line"> &lt;properties&gt;</span><br><span class="line">   &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;</span><br><span class="line">   &lt;maven.compiler.source&gt;1.7&lt;/maven.compiler.source&gt;</span><br><span class="line">   &lt;maven.compiler.target&gt;1.7&lt;/maven.compiler.target&gt;</span><br><span class="line">   &lt;hive.version&gt;1.1.0-cdh5.16.2&lt;/hive.version&gt;</span><br><span class="line">   &lt;hadoop.version&gt;2.6.0-cdh5.16.2&lt;/hadoop.version&gt;</span><br><span class="line"> &lt;/properties&gt;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"> &lt;repositories&gt;</span><br><span class="line"> 	&lt;!-- 阿里云仓库--&gt;</span><br><span class="line"> 	&lt;repository&gt;</span><br><span class="line">            &lt;id&gt;alimaven&lt;/id&gt;</span><br><span class="line">            &lt;name&gt;aliyun maven&lt;/name&gt;</span><br><span class="line">            &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">        &lt;/repository&gt;</span><br><span class="line">    &lt;!--Note: CDH版本一定需要添加如下依赖--&gt;</span><br><span class="line">   &lt;repository&gt;</span><br><span class="line">     &lt;id&gt;cloudera&lt;/id&gt;</span><br><span class="line">     &lt;url&gt;https://repository.cloudera.com/artifactory/cloudera-repos&lt;/url&gt;</span><br><span class="line">   &lt;/repository&gt;</span><br><span class="line"> &lt;/repositories&gt;</span><br><span class="line"></span><br><span class="line"> &lt;dependencies&gt;</span><br><span class="line">   &lt;!-- HDFS --&gt;</span><br><span class="line">   &lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.apache.hadoop&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;hadoop-common&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;$&#123;hadoop.version&#125;&lt;/version&gt;</span><br><span class="line">   &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">   &lt;dependency&gt;</span><br><span class="line">     &lt;!-- Hive --&gt;</span><br><span class="line">     &lt;groupId&gt;org.apache.hive&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;hive-exec&lt;/artifactId&gt;</span><br><span class="line">     &lt;version&gt;$&#123;hive.version&#125;&lt;/version&gt;</span><br><span class="line">   &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">     &lt;dependency&gt;</span><br><span class="line">       &lt;groupId&gt;org.apache.hive&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;hive-exec&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;$&#123;hive.version&#125;&lt;/version&gt;</span><br><span class="line">      &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">      &lt;dependency&gt;</span><br><span class="line">         &lt;groupId&gt;org.apache.hive&lt;/groupId&gt;</span><br><span class="line">         &lt;artifactId&gt;hive-contrib&lt;/artifactId&gt;</span><br><span class="line">          &lt;version&gt;$&#123;hive.version&#125;&lt;/version&gt;</span><br><span class="line">       &lt;/dependency&gt;</span><br><span class="line"> &lt;/dependencies&gt;</span><br><span class="line"></span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="创建自定义函数的类">创建自定义函数的类</h4>
+<p>右键包名：New-&gt;java Class 新建UDFHello.java类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">package com.lxl.udf;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.hive.ql.exec.Description;</span><br><span class="line">import org.apache.hadoop.hive.ql.exec.UDF;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * UDF开发步骤：</span><br><span class="line"> * 1) extends UDF</span><br><span class="line"> * 2) 重写evaluate方法</span><br><span class="line"> **/</span><br><span class="line">@Description(name = &quot;say_hello_doc&quot;,</span><br><span class="line">        value = &quot;_FUNC_(str) - Returns str with BIGDATA: BIGDATA- str&quot;,</span><br><span class="line">        extended = &quot;Example:\n  &quot; +</span><br><span class="line">                &quot;&gt; SELECT _FUNC_(&apos;JIM&apos;) FROM src LIMIT 1;\n&quot; + &quot;  &apos;Hello: BIGDATA-JIM&apos;&quot;)</span><br><span class="line">public class UDFHello extends UDF &#123;</span><br><span class="line"></span><br><span class="line">    public String evaluate(String ename) &#123;</span><br><span class="line">        return  &quot;Hello: BIGDATA-&quot; + ename;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String evaluate(String ename, String grade) &#123;</span><br><span class="line">        return  &quot;Hello: BIGDATA-&quot; + grade + &quot; : &quot; + ename;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意: apache版本的extended中的字符串不能手动换行, 只能使用\n换行,否则不会生效</p>
+<h3 id="下载源码">下载源码</h3>
+<p>hive-1.1.0-cdh5.16.2-src.tar.gz源码文件,上传到服务器,解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">解压到当前目录：</span><br><span class="line">    [hadoop@hadoop001 sourcecode]$ tar -zxvf hive-1.1.0-cdh5.16.2-src.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="将udfhellojava类添加到源码">将UDFHello.java类添加到源码</h3>
+<ol>
+<li>
+<p>将UDFHello.java类上传到/home/bigdata/sourcecode/hive-1.1.0-cdh5.16.2/ql/src/java/org/apache/hadoop/hive/ql/udf 目录</p>
+</li>
+<li>
+<p>修改UDFHello.java类的包：将 package com.lxl.udf; 修改为package org.apache.hadoop.hive.ql.udf;</p>
+</li>
+<li>
+<p>修改FunctionRegistry.java类文件，对UDFHello.java类进行注册：<br>
+3.3.1 引入UDFHello.java类文件的路径：<br>
+import org.apache.hadoop.hive.ql.udf.UDFHello;</p>
+<pre><code>3.3.2 在 static 块中添加:system.registerUDF(&quot;helloudf&quot;, UDFHello.class, false);
+     如下：
+           static {
+                   system.registerGenericUDF(&quot;concat&quot;, GenericUDFConcat.class);
+                   system.registerUDF(&quot;helloudf&quot;, HelloUDF.class, false);
+                   .
+                   .
+                   .
+                }
+</code></pre>
+</li>
+</ol>
+<h3 id="编译">编译</h3>
+<ol>
+<li>
+<p>进入hive-1.1.0-cdh5.16.0目录进行源码编译：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop001 sourcecode] cd hive-1.1.0-cdh5.16.2</span><br><span class="line">[hadoop@hadoop001 hive-1.1.0-cdh5.16.2] mvn clean package -DskipTests -Phadoop-2 -Pdist</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>编译成功后会生成一个tar包：/home/bigdata/sourcecode/hive-1.1.0-cdh5.16.2/packaging/target/apache-hive-1.1.0-cdh5.16.2-bin.tar.gz</p>
+</li>
+</ol>
+<h3 id="部署hive-110-cdh5162">部署hive-1.1.0-cdh5.16.2</h3>
+<ol>
+<li>
+<p>直接将编译好的apache-hive-1.1.0-cdh5.16.2-bin.tar.gz进行解压安装</p>
+</li>
+<li>
+<p>替换hive-exec-1.1.0-cdh5.16.2.jar包。</p>
+<p>在编译好的文件中找到hive-exec-1.1.0-cdh5.16.2.jar包，去替换现在使用的hadoop-2.6.0-cdh5.16.2的hive-exec-1.1.0-cdh5.16.2.jar包<br>
+编译好的hive-exec-1.1.0-cdh5.16.2.jar包路径：/home/bigdata/sourcecode/hive-1.1.0-cdh5.16.2/packaging/target/apache-hive-1.1.0-cdh5.16.2-bin/apache-hive-1.1.0-cdh5.16.2-bin/lib/<br>
+现在使用的hadoop-2.6.0-cdh5.16.2的hive-exec-1.1.0-cdh5.16.2.jar包路径：/home/bigdata/app/hive-1.1.0-cdh5.16.2/lib/hive-exec-1.1.0-cdh5.16.2.jar<br>
+切换到现在使用的hive目录：</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hadoop@hadoop001 ~]$ cd ~/app/hive-1.1.0-cdh5.16.2/</span><br><span class="line">         [hadoop@hadoop001 hive-1.1.0-cdh5.16.2]$ pwd</span><br><span class="line">         /home/hadoop/app/hive-1.1.0-cdh5.16.2</span><br><span class="line">         [hadoop@hadoop001 hive-1.1.0-cdh5.16.2]$ </span><br><span class="line">         备份现在使用的jar包：</span><br><span class="line">         /home/hadoop/app/hive-1.1.0-cdh5.16.2/lib/</span><br><span class="line">          [hadoop@hadoop001 hive-1.1.0-cdh5.16.2]# mv hive-exec-1.1.0-cdh5.16.2.jar hive-exec-1.1.0-cdh5.16.2.jar.bak</span><br><span class="line">         拷贝到原hive 部署位置：</span><br><span class="line">         [hadoop@hadoop001 hive-1.1.0-cdh5.16.2]# cp /home/hadoop/sourcecode/hive-1.1.0-cdh5.16.2/packaging/target/apache-hive-1.1.0-cdh5.16.2-bin/apache-hive-1.1.0-cdh5.16.2-bin/lib/hive-exec-1.1.0-cdh5.16.2.jar  ./</span><br><span class="line">         查看hive-exec-1.1.0-cdh5.16.2.jar包</span><br><span class="line">         [hadoop@hadoop001 lib]$ ll hive-exec-1.1.0-cdh5.16.2.*</span><br><span class="line">         -rw-rw-r--. 1 hadoop hadoop 19274963 Jul  5 17:44 hive-exec-1.1.0-cdh5.16.2.jar</span><br><span class="line">         -rw-r--r--. 1 hadoop hadoop 19272159 Mar 24  2016 hive-exec-1.1.0-cdh5.16.2.jar.bak</span><br></pre></td></tr></table></figure>
+<h3 id="重启">重启</h3>
+<p>重启hive进行验证：<br>
+hive&gt; desc function helloudf</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/HDFSAPI/" data-toggle="tooltip" data-placement="top" title="HDFS_API">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/flume/" data-toggle="tooltip" data-placement="top" title="Flume入门">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mapreduce"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">MapReduce</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mr作业部署"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">MR&#x4F5C;&#x4E1A;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#将mysql的数据读取存到hdfs"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">&#x5C06;MySQL&#x7684;&#x6570;&#x636E;&#x8BFB;&#x53D6;&#x5B58;&#x5230;HDFS</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#hiveudf注册到源码中编译"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Hive(UDF)&#x6CE8;&#x518C;&#x5230;&#x6E90;&#x7801;&#x4E2D;&#x7F16;&#x8BD1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#编写udf函数"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">&#x7F16;&#x5199;UDF&#x51FD;&#x6570;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#pomxml"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">pom.xml</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#创建自定义函数的类"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">&#x521B;&#x5EFA;&#x81EA;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x7684;&#x7C7B;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#下载源码"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">&#x4E0B;&#x8F7D;&#x6E90;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#将udfhellojava类添加到源码"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">&#x5C06;UDFHello.java&#x7C7B;&#x6DFB;&#x52A0;&#x5230;&#x6E90;&#x7801;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#编译"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">&#x7F16;&#x8BD1;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#部署hive-110-cdh5162"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">&#x90E8;&#x7F72;hive-1.1.0-cdh5.16.2</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#重启"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">&#x91CD;&#x542F;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="" target="_blank"></a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'rz'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/PsycheLee">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; PsycheLee 2021 
+                    By  <a target="_blank"  href="https://github.com/PsycheLee">阿雪的小空间</a> | Psyche
+                   
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://psychelee.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://psychelee.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

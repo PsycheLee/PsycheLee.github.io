@@ -7,6 +7,54 @@
     </url>
 
     <url>
+        <loc>http://psychelee.github.io/article/flume/</loc>
+        <lastmod>2021-05-02T15:52:05.203Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/MapReduce/</loc>
+        <lastmod>2021-03-27T11:58:21.824Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/20130317Spark%E7%AE%97%E5%AD%90/</loc>
+        <lastmod>2021-03-19T15:05:02.842Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/zookeeper/</loc>
+        <lastmod>2021-03-17T12:57:28.230Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/HDFSAPI/</loc>
+        <lastmod>2021-03-16T15:10:24.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://psychelee.github.io/article/scala%E6%80%BB%E7%BB%93/</loc>
+        <lastmod>2021-03-05T12:54:17.319Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://psychelee.github.io/article/Linux%E5%85%A5%E9%97%A8/</loc>
         <lastmod>2021-03-05T12:25:23.790Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -23,31 +71,7 @@
     </url>
 
     <url>
-        <loc>http://psychelee.github.io/article/HDFSAPI/</loc>
-        <lastmod>2021-02-28T11:20:25.897Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://psychelee.github.io/article/flume/</loc>
-        <lastmod>2021-02-16T08:12:48.010Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>http://psychelee.github.io/article/1_template/</loc>
-        <lastmod>2021-02-15T06:26:17.271Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://psychelee.github.io/article/scala%E6%80%BB%E7%BB%93/</loc>
         <lastmod>2021-02-15T06:26:17.271Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
